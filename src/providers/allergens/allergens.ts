@@ -1,17 +1,42 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
+import { Allergen } from '../../models/allergen-model';
 
-/*
-  Generated class for the AllergensProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class AllergensProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello AllergensProvider Provider');
+  constructor(private storage: Storage) {
+    console.log('Hello AllergensProvider');
+  }
+
+  getAllergens(): Promise<Allergen[]> {
+    return this
+      .storage
+      .get('allergens')
+      .then(jsonText => this.handleDataLoaded(jsonText));
+    }
+
+  private handleDataLoaded(jsonText: string): Allergen[] {
+    if (!jsonText) {
+      // TODO: remove test data
+      return [
+        new Allergen('peanut'),
+        new Allergen('soy')
+      ];
+    }
+
+    return JSON
+      .parse(jsonText)
+      .map(allergenObj =>
+        new Allergen(allergenObj.name, new Date(allergenObj.dateAdded))
+      );
+  }
+
+  save(allergens: Allergen[]): void {
+    console.log('saving allergens', allergens);
+
+    let json = JSON.stringify(allergens);
+    this.storage.set('allergens', json);
   }
 
 }

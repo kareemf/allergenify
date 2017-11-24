@@ -1,5 +1,5 @@
 export class Allergen {
-  private dateAdded: Date = new Date();
 
-  constructor(public name: string) {}
+  constructor(public name: string, public dateAdded: Date = new Date() ) {}
+
 }
