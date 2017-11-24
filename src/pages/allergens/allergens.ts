@@ -47,4 +47,26 @@ export class AllergensPage {
     this.isDataLoaded = true;
   }
 
+  remove(allergen: Allergen): void {
+    console.log('removing', allergen);
+
+    const index = this.allergens.indexOf(allergen);
+
+    if(index < 0) {
+      console.error('unable to find/delete', allergen);
+      return;
+    }
+
+    this.removeAt(index);
+    console.log('done removing', allergen);
+  }
+
+  private removeAt(index: number) {
+    this.allergens = [
+      ...this.allergens.slice(0, index),
+      ...this.allergens.slice(index + 1)
+    ];
+
+    this.allergensProvider.save(this.allergens);
+  }
 }
