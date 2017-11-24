@@ -1,7 +1,19 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Allergens</ion-title>
+    <ion-title start>Allergens</ion-title>
+
+    <ion-buttons end>
+      <button
+        ion-button
+        icon-only
+        clear
+        color="primary"
+        (click)="add(allergen)">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
@@ -13,10 +25,10 @@
       <p>{{allergen.name}}</p>
 
       <button
+        item-end
         ion-button
         icon-only
         clear
-        item-end
         color="danger"
         (click)="remove(allergen)">
         <ion-icon name="trash"></ion-icon>

@@ -47,6 +47,10 @@ export class AllergensPage {
     this.isDataLoaded = true;
   }
 
+  add() {
+
+  }
+
   remove(allergen: Allergen): void {
     console.log('removing', allergen);
 
