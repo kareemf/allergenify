@@ -44,6 +44,7 @@ export class AllergensPage {
 
   private handleAllergensLoadErorr(error: any): void {
     console.error("allergens laod error:", error);
+    this.isDataLoaded = true;
   }
 
 }
