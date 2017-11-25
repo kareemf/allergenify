@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavParams } from 'ionic-angular';
 import { Product } from '../../models/product-model';
-import { ProductsProvider } from '../../providers/products/products';
 import { Picture } from '../../models/picture-model';
 import { OcrProvider } from '../../providers/ocr/ocr';
+import { AllergensProvider } from '../../providers/allergens/allergens';
+import { Allergen } from '../../models/allergen-model';
 
 @IonicPage()
 @Component({
@@ -14,7 +15,8 @@ export class ProductPage {
   private product: Product;
   private onSave: (product: Product) => void;
 
-  constructor(private navParams: NavParams, private productsProvider: ProductsProvider, private ocrProvider: OcrProvider) {
+  constructor(private navParams: NavParams, private ocrProvider: OcrProvider,
+              private allergensProvider: AllergensProvider) {
     this.product = this.navParams.get('product');
     this.onSave = this.navParams.get('onSave');
   }
@@ -40,12 +42,25 @@ export class ProductPage {
       .catch(error => this.handleTextExtractionError(error));
   }
 
-  private handleTextExtractionError(text: string): void {
+  private handleTextExtraction(text: string): void {
     console.log("text extraction produced", text);
 
+    this
+      .allergensProvider
+      .checkForAllergens(text)
+      .then((allergens: Allergen[]) => this.handleAllergenCheck(allergens))
+      .catch(error => this.handleAllergenCheckError(error));
   }
 
-  private handleTextExtraction(error: any): void {
+  private handleAllergenCheck(allergens: Allergen[]): void {
+    console.log("allergen check results", allergens);
+  }
+
+  private handleAllergenCheckError(error: any): void {
+    console.error("allergen check error", error);
+  }
+
+  private handleTextExtractionError(error: any): void {
     console.error("text extraction error", error);
   }
 
