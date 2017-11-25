@@ -1,5 +1,9 @@
-export class Allergen {
+import { BaseModel } from "./base-model";
 
-  constructor(public name: string, public dateAdded: Date = new Date() ) {}
+export class Allergen extends BaseModel {
+
+  constructor(public name: string, public dateAdded: Date = new Date() ) {
+    super(name, dateAdded);
+  }
 
 }
