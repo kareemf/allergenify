@@ -5,6 +5,7 @@ import { Picture } from '../../models/picture-model';
 import { OcrProvider } from '../../providers/ocr/ocr';
 import { AllergensProvider } from '../../providers/allergens/allergens';
 import { Allergen } from '../../models/allergen-model';
+import { GenericAlerterProvider } from '../../providers/generic-alerter/generic-alerter';
 
 @IonicPage()
 @Component({
@@ -16,7 +17,7 @@ export class ProductPage {
   private onSave: (product: Product) => void;
 
   constructor(private navParams: NavParams, private ocrProvider: OcrProvider,
-              private allergensProvider: AllergensProvider) {
+              private allergensProvider: AllergensProvider, private alerter: GenericAlerterProvider,) {
     this.product = this.navParams.get('product');
     this.onSave = this.navParams.get('onSave');
   }
@@ -58,10 +59,14 @@ export class ProductPage {
 
   private handleAllergenCheckError(error: any): void {
     console.error("allergen check error", error);
+
+    this.alerter.presentError('Failed to process image');
   }
 
   private handleTextExtractionError(error: any): void {
     console.error("text extraction error", error);
+
+    this.alerter.presentError('Failed to process text from image');
   }
 
 }
