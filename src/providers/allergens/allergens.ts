@@ -1,32 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Allergen } from '../../models/allergen-model';
+import { StorageDataProvider } from '../storage-data';
 
 @Injectable()
-export class AllergensProvider {
+export class AllergensProvider extends StorageDataProvider {
 
-  constructor(private storage: Storage) {
+  constructor(storage: Storage) {
+    super(storage, 'allergens');
     console.log('Hello AllergensProvider');
   }
 
   getAllergens(): Promise<Allergen[]> {
-    return this
-      .storage
-      .get('allergens')
-      .then(jsonText => this.handleDataLoaded(jsonText));
-    }
+    return super.getItems();
+  }
 
-  private handleDataLoaded(jsonText: string): Allergen[] {
-    if (!jsonText) {
-      // TODO: remove test data
-      return [
-        new Allergen('peanut'),
-        new Allergen('soy')
-      ];
-    }
-
-    return JSON
-      .parse(jsonText)
+  protected handleDataLoaded(jsonText: string): Allergen[] {
+    return super
+      .handleDataLoaded(jsonText)
       .map(allergenObj =>
         new Allergen(allergenObj.name, new Date(allergenObj.dateAdded))
       );
@@ -34,9 +25,7 @@ export class AllergensProvider {
 
   save(allergens: Allergen[]): void {
     console.log('saving allergens', allergens);
-
-    let json = JSON.stringify(allergens);
-    this.storage.set('allergens', json);
+    super.save(allergens);
   }
 
 }
