@@ -6,6 +6,7 @@ export abstract class StorageDataProvider {
     console.log('Hello StorageDataProvider');
   }
 
+  //TODO: figure out how to generify this
   abstract getItems();
 
   protected _getItems<T>(mapper: (data: any) => T): Promise<T[]> {

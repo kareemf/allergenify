@@ -6,14 +6,14 @@ export abstract class ListPage {
 
   constructor (protected platform: Platform, private dataProvider: StorageDataProvider) {}
 
-  ionViewDidLoad<T>() {
-    this.setupPlatformReady<T>();
+  ionViewDidLoad() {
+    this.setupPlatformReady();
   }
 
-  private setupPlatformReady<T>(): void {
+  private setupPlatformReady(): void {
     this.platform.ready().then(() => {
       console.log('platform ready');
-      this.loadItems<T>();
+      this.loadItems();
     });
   }
 

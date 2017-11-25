@@ -21,10 +21,10 @@ export class AllergensPage extends ListPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AllergensPage');
-    super.ionViewDidLoad<Allergen>();
+    super.ionViewDidLoad();
   }
 
-  protected postDataLoad<Allergen>(items) {
+  protected postDataLoad(items) {
     this.allergens = items;
   }
 
