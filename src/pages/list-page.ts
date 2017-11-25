@@ -3,9 +3,9 @@ import { Platform } from "ionic-angular";
 import { BaseModel } from "../models/base-model";
 
 export abstract class ListPage {
-  private isListDataLoaded: boolean = false;
+  protected isListDataLoaded: boolean = false;
 
-  constructor (private platform: Platform, private dataProvider: StorageDataProvider) {}
+  constructor (protected platform: Platform, private dataProvider: StorageDataProvider) {}
 
   ionViewDidLoad() {
     this.setupPlatformReady();
@@ -33,7 +33,7 @@ export abstract class ListPage {
     this.postDataLoad(items);
   }
 
-  abstract postDataLoad(items: BaseModel[]);
+  protected abstract postDataLoad(items: BaseModel[]);
 
   private handleItemsLoadErorr(error: any): void {
     console.error("load error:", error);
