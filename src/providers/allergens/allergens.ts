@@ -11,12 +11,8 @@ export class AllergensProvider extends StorageDataProvider {
     console.log('Hello AllergensProvider');
   }
 
-  getAllergens(): Promise<Allergen[]> {
-    return super.getItems();
-  }
-
-  protected handleDataLoaded(jsonText: string): Allergen[] {
-    return super.handleDataLoaded(jsonText, Allergen.from);
+  getItems(): Promise<Allergen[]> {
+    return super._getItems<Allergen>(Allergen.from);
   }
 
 }

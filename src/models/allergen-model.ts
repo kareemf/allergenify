@@ -6,4 +6,8 @@ export class Allergen extends BaseModel {
     super(name, dateAdded);
   }
 
+  static from(data: any): Allergen {
+    return new Allergen(data.name, data.dateAdded);
+  }
+
 }

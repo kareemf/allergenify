@@ -1,22 +1,23 @@
 import { Storage } from '@ionic/storage';
-import { BaseModel } from '../models/base-model';
 
-export class StorageDataProvider {
+export abstract class StorageDataProvider {
 
   constructor(private storage: Storage, private itemsKey: string) {
     console.log('Hello StorageDataProvider');
   }
 
-  public getItems<T>(): Promise<T[]> {
+  abstract getItems();
+
+  protected _getItems<T>(mapper: (data: any) => T): Promise<T[]> {
     console.log(`fetching ${this.itemsKey}`);
 
     return this
       .storage
       .get(this.itemsKey)
-      .then(jsonText => this.handleDataLoaded(jsonText, (data) => BaseModel.from(data)));
+      .then(jsonText => this.handleDataLoaded(jsonText, mapper));
   }
 
-  protected handleDataLoaded<T>(jsonText: string, mapper: (any) => T): any[] {
+  protected handleDataLoaded<T>(jsonText: string, mapper: (data: any) => T): T[] {
     if (!jsonText) {
       return [];
     }
@@ -26,14 +27,14 @@ export class StorageDataProvider {
       .map(data => mapper(data));
   }
 
-  public save<T>(items: T[]): void {
+  save<T>(items: T[]): void {
     console.log(`saving ${this.itemsKey}`, items);
 
     let json = JSON.stringify(items);
     this.storage.set(this.itemsKey, json);
   }
 
-  public remove<T>(item: T, items: T[]): Promise<T[]> {
+  remove<T>(item: T, items: T[]): Promise<T[]> {
     console.log(`removing  ${this.itemsKey}`, item, 'from', items);
 
     const index = items.indexOf(item);

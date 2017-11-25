@@ -1,28 +1,27 @@
 import { StorageDataProvider } from "../providers/storage-data";
 import { Platform } from "ionic-angular";
-import { BaseModel } from "../models/base-model";
 
 export abstract class ListPage {
   protected isListDataLoaded: boolean = false;
 
   constructor (protected platform: Platform, private dataProvider: StorageDataProvider) {}
 
-  ionViewDidLoad() {
-    this.setupPlatformReady();
+  ionViewDidLoad<T>() {
+    this.setupPlatformReady<T>();
   }
 
-  private setupPlatformReady(): void {
+  private setupPlatformReady<T>(): void {
     this.platform.ready().then(() => {
       console.log('platform ready');
-      this.loadItems();
+      this.loadItems<T>();
     });
   }
 
-  private loadItems(): void {
+  private loadItems<T>(): void {
     this
       .dataProvider
       .getItems()
-      .then(items => this.handleItemsLoad(items))
+      .then((items: T[]) => this.handleItemsLoad(items))
       .catch(error => this.handleItemsLoadErorr(error));
   }
 
