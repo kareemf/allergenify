@@ -11,6 +11,9 @@ import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Camera } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
+
 import { AllergensProvider } from '../providers/allergens/allergens';
 import { ProductsProvider } from '../providers/products/products';
 import { SaveDialogProvider } from '../providers/save-dialog/save-dialog';
@@ -40,6 +43,8 @@ import { SaveDialogProvider } from '../providers/save-dialog/save-dialog';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Camera,
+    File,
     AllergensProvider,
     ProductsProvider,
     SaveDialogProvider
