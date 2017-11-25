@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, Platform, AlertController } from 'ionic-angular';
+import { IonicPage, Platform } from 'ionic-angular';
 import { AllergensProvider } from '../../providers/allergens/allergens';
 import { Allergen } from '../../models/allergen-model';
 import { ListPage } from '../list-page';
+import { SaveDialogProvider } from '../../providers/save-dialog/save-dialog';
 
 @IonicPage()
 @Component({
@@ -13,8 +14,9 @@ export class AllergensPage extends ListPage {
   private allergens: Allergen[] = [];
 
   constructor(platform: Platform, private allergensProvider: AllergensProvider,
-              private alertController: AlertController) {
+              private saveDialogProvider: SaveDialogProvider) {
     super(platform, allergensProvider);
+    this.handleAddAllergen = this.handleAddAllergen.bind(this);
   }
 
   ionViewDidLoad() {
@@ -27,23 +29,7 @@ export class AllergensPage extends ListPage {
   }
 
   add(): void {
-    this
-      .alertController
-      .create({
-        title: 'Add An Allergen',
-        message: '',
-        inputs: [{ name: 'name'}],
-        buttons: [
-          {
-            text: 'Cancel'
-          },
-          {
-            text: 'Save',
-            handler: (inputs) => this.handleAddAllergen(inputs.name)
-          }
-        ]
-      })
-      .present();
+    this.saveDialogProvider.present('Add An Allergen', this.handleAddAllergen);
   }
 
   private handleAddAllergen(name: string): void {
