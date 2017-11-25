@@ -26,9 +26,13 @@ export class AllergensProvider extends StorageDataProvider {
 
     // TODO: new AllergenMatch concept that includes allergen and matching word
     return allergens.reduce((allTriggeredAllergens, allergen) => {
-      const triggeredAllergens = tokens.filter(token => token.includes(allergen.name));
+      const doesContainAllergen: boolean = !!tokens.find(token => token.includes(allergen.name));
 
-      return [...allTriggeredAllergens, ...triggeredAllergens];
+      if (doesContainAllergen) {
+        return [...allTriggeredAllergens, allergen];
+      }
+
+      return allTriggeredAllergens;
     }, []);
   }
 }
