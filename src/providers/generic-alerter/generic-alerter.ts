@@ -25,6 +25,7 @@ export class GenericAlerterProvider {
         buttons: [{
           text: 'Ok'
       }]
-    });
+    })
+    .present();
   }
 }
