@@ -10,6 +10,7 @@ import { ImagePersistence } from
 '../../providers/image-persistence/image-persistence';
 import { Picture } from '../../models/picture-model';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { GenericAlerterProvider } from '../../providers/generic-alerter/generic-alerter';
 
 @IonicPage()
 @Component({
@@ -30,7 +31,7 @@ export class ProductsPage extends ListPage {
 
   constructor(protected platform: Platform, private productsProvider: ProductsProvider,
               private saveDialogProvider: SaveDialogProvider, private camera: Camera,
-              private imagePersistence: ImagePersistence, private alertController: AlertController,
+              private imagePersistence: ImagePersistence, private alerter: GenericAlerterProvider,
               private navController: NavController) {
     super(platform, productsProvider);
     this.handleAddProduct = this.handleAddProduct.bind(this);
@@ -123,24 +124,12 @@ export class ProductsPage extends ListPage {
   private handleImagePersistenceError(error: any): void {
     console.error("image persistence error:", error);
 
-    this.presentError('Failed to persist image on device');
+    this.alerter.presentError('Failed to persist image on device');
   }
 
   private handleImageCaptureError(error: any): void {
     console.error("error capturing image:", error);
 
-    this.presentError('Failed to capture image');
-  }
-
-  private presentError(message: string = ''){
-    this
-      .alertController
-      .create({
-      title: 'Woops',
-      message,
-      buttons: [{
-        text: 'Ok'
-      }]
-    });
+    this.alerter.presentError('Failed to capture image');
   }
 }
