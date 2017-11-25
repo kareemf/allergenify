@@ -23,7 +23,17 @@
 <ion-content padding>
   <ion-list>
     <ion-item *ngFor="let product of products">
-      <p>{{product.name}}</p>
+      <p>{{product.name}} - {{product.pictures.length}} photos</p>
+
+      <button
+        item-end
+        ion-button
+        icon-only
+        clear
+        color="primary"
+        (click)="addPhotoTo(product)">
+        <ion-icon name="camera"></ion-icon>
+      </button>
 
       <button
         item-end

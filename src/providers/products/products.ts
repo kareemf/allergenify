@@ -12,7 +12,7 @@ export class ProductsProvider extends StorageDataProvider {
   }
 
   getProducts(): Promise<Product[]> {
-    return super.getItems();
+    return super.getItems() as Promise<Product[]>;
   }
 
   protected handleDataLoaded(jsonText: string): Product[] {

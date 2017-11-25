@@ -17,6 +17,7 @@ import { File } from '@ionic-native/file';
 import { AllergensProvider } from '../providers/allergens/allergens';
 import { ProductsProvider } from '../providers/products/products';
 import { SaveDialogProvider } from '../providers/save-dialog/save-dialog';
+import { ImagePersistence } from '../providers/image-persistence/image-persistence';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { SaveDialogProvider } from '../providers/save-dialog/save-dialog';
     File,
     AllergensProvider,
     ProductsProvider,
-    SaveDialogProvider
+    SaveDialogProvider,
+    ImagePersistence
   ]
 })
 export class AppModule {}
