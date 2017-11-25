@@ -2,7 +2,7 @@ import { StorageDataProvider } from "../providers/storage-data";
 import { Platform } from "ionic-angular";
 import { BaseModel } from "../models/base-model";
 
-export class ListPage {
+export abstract class ListPage {
   private isListDataLoaded: boolean = false;
 
   constructor (private platform: Platform, private dataProvider: StorageDataProvider) {}
@@ -33,9 +33,7 @@ export class ListPage {
     this.postDataLoad(items);
   }
 
-  protected postDataLoad(items: BaseModel[]) {
-    throw new Error("`postDataLoad` must be overwritten implemented.");
-  }
+  abstract postDataLoad(items: BaseModel[]);
 
   private handleItemsLoadErorr(error: any): void {
     console.error("load error:", error);

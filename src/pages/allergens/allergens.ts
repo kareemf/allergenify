@@ -46,7 +46,7 @@ export class AllergensPage extends ListPage {
       .then((allergens: Allergen[]) => this.allergens = allergens);
   }
 
-  private save() {
+  save() {
     this.allergensProvider.save(this.allergens);
   }
 }
