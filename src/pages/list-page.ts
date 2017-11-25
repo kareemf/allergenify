@@ -26,14 +26,14 @@ export abstract class ListPage {
       .catch(error => this.handleItemsLoadErorr(error));
   }
 
-  private handleItemsLoad(items: BaseModel[]): void {
+  private handleItemsLoad<T>(items: T[]): void {
     console.log("loaded items", items);
 
     this.isListDataLoaded = true;
     this.postDataLoad(items);
   }
 
-  protected abstract postDataLoad(items: BaseModel[]);
+  protected abstract postDataLoad<T>(items: T[]);
 
   private handleItemsLoadErorr(error: any): void {
     console.error("load error:", error);

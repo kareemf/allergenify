@@ -24,7 +24,7 @@ export class AllergensPage extends ListPage {
     super.ionViewDidLoad();
   }
 
-  protected postDataLoad(items: Allergen[]) {
+  protected postDataLoad<Allergen>(items) {
     this.allergens = items;
   }
 

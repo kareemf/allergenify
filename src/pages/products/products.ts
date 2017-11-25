@@ -41,7 +41,7 @@ export class ProductsPage extends ListPage {
     super.ionViewDidLoad();
   }
 
-  protected postDataLoad(items: Product[]) {
+  protected postDataLoad<Product>(items) {
     this.products = items;
   }
 

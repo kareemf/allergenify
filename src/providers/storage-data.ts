@@ -7,7 +7,7 @@ export class StorageDataProvider {
     console.log('Hello StorageDataProvider');
   }
 
-  public getItems(): Promise<BaseModel[]> {
+  public getItems<T>(): Promise<T[]> {
     console.log(`fetching ${this.itemsKey}`);
 
     return this
@@ -16,7 +16,7 @@ export class StorageDataProvider {
       .then(jsonText => this.handleDataLoaded(jsonText, (data) => BaseModel.from(data)));
   }
 
-  protected handleDataLoaded(jsonText: string, mapper: (any) => BaseModel): any[] {
+  protected handleDataLoaded<T>(jsonText: string, mapper: (any) => T): any[] {
     if (!jsonText) {
       return [];
     }
@@ -26,14 +26,14 @@ export class StorageDataProvider {
       .map(data => mapper(data));
   }
 
-  public save(items: BaseModel[]): void {
+  public save<T>(items: T[]): void {
     console.log(`saving ${this.itemsKey}`, items);
 
     let json = JSON.stringify(items);
     this.storage.set(this.itemsKey, json);
   }
 
-  public remove(item: BaseModel, items: BaseModel[]): Promise<BaseModel[]> {
+  public remove<T>(item: T, items: T[]): Promise<T[]> {
     console.log(`removing  ${this.itemsKey}`, item, 'from', items);
 
     const index = items.indexOf(item);
@@ -50,7 +50,7 @@ export class StorageDataProvider {
     return Promise.resolve(newItems);
   }
 
-  protected removeFrom(items: BaseModel[], index: number): BaseModel[] {
+  protected removeFrom<T>(items: T[], index: number): T[] {
     return [
       ...items.slice(0, index),
       ...items.slice(index + 1)
