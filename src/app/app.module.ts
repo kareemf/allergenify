@@ -18,6 +18,7 @@ import { AllergensProvider } from '../providers/allergens/allergens';
 import { ProductsProvider } from '../providers/products/products';
 import { SaveDialogProvider } from '../providers/save-dialog/save-dialog';
 import { ImagePersistence } from '../providers/image-persistence/image-persistence';
+import { OcrProvider } from '../providers/ocr/ocr';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { ImagePersistence } from '../providers/image-persistence/image-persisten
     AllergensProvider,
     ProductsProvider,
     SaveDialogProvider,
-    ImagePersistence
+    ImagePersistence,
+    OcrProvider
   ]
 })
 export class AppModule {}

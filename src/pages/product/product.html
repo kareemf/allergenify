@@ -16,7 +16,11 @@
 
       <p>{{picture.dateAdded}}</p>
 
-      <button ion-button clear item-end>
+      <button
+        item-end
+        ion-button
+        clear
+        (click)="scanPicture(picture)">
         Scan
       </button>
 
