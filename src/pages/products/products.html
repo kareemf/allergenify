@@ -26,6 +26,16 @@
       <p>{{product.name}} - {{product.pictures.length}} photos</p>
 
       <button
+      item-end
+      ion-button
+      icon-only
+      clear
+      color="dark"
+      (click)="view(product)">
+      <ion-icon name="eye"></ion-icon>
+    </button>
+
+      <button
         item-end
         ion-button
         icon-only

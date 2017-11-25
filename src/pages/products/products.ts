@@ -1,6 +1,6 @@
 // TODO: dedupe this code further
 import { Component } from '@angular/core';
-import { IonicPage, Platform } from 'ionic-angular';
+import { IonicPage, Platform, NavController } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { ProductsProvider } from '../../providers/products/products';
 import { Product } from '../../models/product-model';
@@ -30,7 +30,8 @@ export class ProductsPage extends ListPage {
 
   constructor(protected platform: Platform, private productsProvider: ProductsProvider,
               private saveDialogProvider: SaveDialogProvider, private camera: Camera,
-              private imagePersistence: ImagePersistence, private alertController: AlertController) {
+              private imagePersistence: ImagePersistence, private alertController: AlertController,
+              private navController: NavController) {
     super(platform, productsProvider);
     this.handleAddProduct = this.handleAddProduct.bind(this);
   }
@@ -55,6 +56,10 @@ export class ProductsPage extends ListPage {
     this.save();
   }
 
+  save() {
+    this.productsProvider.save(this.products);
+  }
+
   remove(product: Product): void {
     this
       .productsProvider
@@ -62,8 +67,8 @@ export class ProductsPage extends ListPage {
       .then((products: Product[]) => this.products = products);
   }
 
-  save() {
-    this.productsProvider.save(this.products);
+  view(product: Product): void {
+    this.navController.push('ProductPage', { product });
   }
 
   addPhotoTo(product: Product) {
@@ -79,10 +84,11 @@ export class ProductsPage extends ListPage {
   }
 
   private cantTakePhoto(): boolean {
-    if(!this.isListDataLoaded) {
-      console.log("can't take photo - data not loaded")
-      return true;
-    }
+    // TODO: reenable after device debugging works
+    // if(!this.isListDataLoaded) {
+    //   console.log("can't take photo - data not loaded")
+    //   return true;
+    // }
 
     if(!this.platform.is('cordova')){
       console.log("can't take photo - not on device");
