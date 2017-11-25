@@ -2,50 +2,28 @@ import { Component } from '@angular/core';
 import { IonicPage, Platform, AlertController } from 'ionic-angular';
 import { AllergensProvider } from '../../providers/allergens/allergens';
 import { Allergen } from '../../models/allergen-model';
+import { ListPage } from '../list-page';
 
 @IonicPage()
 @Component({
   selector: 'page-allergens',
   templateUrl: 'allergens.html',
 })
-export class AllergensPage {
-  private isDataLoaded: boolean = false;
+export class AllergensPage extends ListPage {
   private allergens: Allergen[] = [];
 
-  constructor(private platform: Platform, private allergensProvider: AllergensProvider,
+  constructor(platform: Platform, private allergensProvider: AllergensProvider,
               private alertController: AlertController) {
+    super(platform, allergensProvider);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AllergensPage');
-    this.setupPlatformReady();
+    super.ionViewDidLoad();
   }
 
-  private setupPlatformReady(): void {
-    this.platform.ready().then(() => {
-      console.log('AllergensPage platform ready');
-      this.loadAllergens();
-    });
-  }
-
-  private loadAllergens(): void {
-    this
-      .allergensProvider
-      .getAllergens()
-      .then(allergens => this.handleAllergensLoad(allergens))
-      .catch(error => this.handleAllergensLoadErorr(error));
-  }
-
-  private handleAllergensLoad(allergens: Allergen[]): void {
-    console.log("loaded allergens", allergens);
-
-    this.allergens = allergens;
-    this.isDataLoaded = true;
-  }
-
-  private handleAllergensLoadErorr(error: any): void {
-    console.error("allergens laod error:", error);
-    this.isDataLoaded = true;
+  protected postDataLoad(items: Allergen[]) {
+    this.allergens = items;
   }
 
   add(): void {
