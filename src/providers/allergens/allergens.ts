@@ -16,16 +16,7 @@ export class AllergensProvider extends StorageDataProvider {
   }
 
   protected handleDataLoaded(jsonText: string): Allergen[] {
-    return super
-      .handleDataLoaded(jsonText)
-      .map(allergenObj =>
-        new Allergen(allergenObj.name, new Date(allergenObj.dateAdded))
-      );
-  }
-
-  save(allergens: Allergen[]): void {
-    console.log('saving allergens', allergens);
-    super.save(allergens);
+    return super.handleDataLoaded(jsonText, Allergen.from);
   }
 
 }

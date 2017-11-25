@@ -7,22 +7,25 @@ export class StorageDataProvider {
     console.log('Hello StorageDataProvider');
   }
 
-  protected getItems() {
+  public getItems() {
     return this
       .storage
       .get(this.itemsKey)
-      .then(jsonText => this.handleDataLoaded(jsonText));
+      .then(jsonText => this.handleDataLoaded(jsonText, (data) => BaseModel.from(data)));
   }
 
-  protected handleDataLoaded(jsonText: string): any[] {
+  protected handleDataLoaded(jsonText: string, mapper: (any) => BaseModel): any[] {
     if (!jsonText) {
       return [];
     }
 
-    return JSON.parse(jsonText)
+    return JSON
+      .parse(jsonText)
+      .map(data => mapper(data));
   }
 
-  protected save(items: BaseModel[]): void {
+  public save(items: BaseModel[]): void {
+    console.log(`saving ${this.itemsKey}`, items);
     let json = JSON.stringify(items);
     this.storage.set(this.itemsKey, json);
   }
