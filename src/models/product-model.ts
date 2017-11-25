@@ -1,5 +1,6 @@
 import { BaseModel } from "./base-model";
 import { Picture } from "./picture-model";
+import { Allergen } from "./allergen-model";
 
 export class Product extends BaseModel {
 
@@ -7,8 +8,12 @@ export class Product extends BaseModel {
     return new Product(data.name, data.dateAdded, data.pictures);
   }
 
-  constructor(public name: string, public dateAdded: Date = new Date(), private pictures: Picture[] = [] ) {
+  constructor(public name: string, public dateAdded: Date = new Date(),
+              public pictures: Picture[] = [], public allergens: Allergen[] = []) {
     super(name, dateAdded);
+
+    // TODO: remove test data
+    this.addPicture(new Picture("/img.png"));
   }
 
   addPicture(picture: Picture): void {

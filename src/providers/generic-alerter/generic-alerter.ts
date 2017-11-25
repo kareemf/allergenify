@@ -8,14 +8,22 @@ export class GenericAlerterProvider {
     console.log('Hello GenericAlerterProvider');
   }
 
-  presentError(message: string = '') {
+  presentConfirmation(message: string) {
+    this.present('Confirm', message);
+  }
+
+  presentError(message: string) {
+    this.present('Woops', message);
+  }
+
+  present(title: string = '', message: string = '') {
     this
       .alertController
       .create({
-      title: 'Woops',
-      message,
-      buttons: [{
-        text: 'Ok'
+        title,
+        message,
+        buttons: [{
+          text: 'Ok'
       }]
     });
   }

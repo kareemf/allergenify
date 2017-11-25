@@ -55,6 +55,27 @@ export class ProductPage {
 
   private handleAllergenCheck(allergens: Allergen[]): void {
     console.log("allergen check results", allergens);
+
+    if(!allergens.length) {
+      this.alerter.presentConfirmation("No allergens found!");
+    } else {
+      this.presentAllergensDetected(allergens);
+      this.handleAllergensFound(allergens);
+    }
+  }
+
+  private presentAllergensDetected(allergens: Allergen[]) {
+    const title = 'Allergens Detected';
+    const message = `Found ${allergens.length} allergens:\n ${allergens.map(allergen => allergen.name + '\n')}`;
+
+    this
+      .alerter
+      .present(title, message);
+  }
+
+  private handleAllergensFound(allergens: Allergen[]): void {
+    this.product.allergens = allergens;
+    this.onSave(this.product);
   }
 
   private handleAllergenCheckError(error: any): void {
