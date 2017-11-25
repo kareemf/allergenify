@@ -40,26 +40,10 @@ export class AllergensPage extends ListPage {
   }
 
   remove(allergen: Allergen): void {
-    console.log('removing', allergen);
-
-    const index = this.allergens.indexOf(allergen);
-
-    if(index < 0) {
-      console.error('unable to find/delete', allergen);
-      return;
-    }
-
-    this.removeAt(index);
-    console.log('done removing', allergen);
-  }
-
-  private removeAt(index: number): void {
-    this.allergens = [
-      ...this.allergens.slice(0, index),
-      ...this.allergens.slice(index + 1)
-    ];
-
-    this.save();
+    this
+      .allergensProvider
+      .remove(allergen, this.allergens)
+      .then((allergens: Allergen[]) => this.allergens = allergens);
   }
 
   private save() {

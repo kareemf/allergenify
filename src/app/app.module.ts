@@ -12,6 +12,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AllergensProvider } from '../providers/allergens/allergens';
+import { ProductsProvider } from '../providers/products/products';
+import { SaveDialogProvider } from '../providers/save-dialog/save-dialog';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { AllergensProvider } from '../providers/allergens/allergens';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AllergensProvider
+    AllergensProvider,
+    ProductsProvider,
+    SaveDialogProvider
   ]
 })
 export class AppModule {}
