@@ -52,6 +52,8 @@ export class ProductPage {
   scanPicture(picture: Picture): void {
     console.log('scanning picture', picture);
 
+    this.product.dateScanned = new Date();
+
     this
       .ocrProvider
       .extractText(picture)

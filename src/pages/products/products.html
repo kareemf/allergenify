@@ -19,17 +19,29 @@
 
 </ion-header>
 
-
 <ion-content padding>
   <ion-list>
     <ion-item *ngFor="let product of items">
       <button
-      ion-button
-      clear
-      color="dark"
-      (click)="view(product)">
-      {{product.name}} - {{product.pictures.length}} photos
-    </button>
+        ion-button
+        clear
+        color="dark"
+        (click)="view(product)">
+        {{product.name}}
+      </button>
+
+      <h3>
+        <span *ngIf="product.containsAllergens()">
+          {{product.numAllergens()}} allergens found
+        </span>
+        <span *ngIf="!product.containsAllergens()">
+          {{product.status}}
+        </span>
+      </h3>
+
+      <p>
+        {{product.numPictures()}} photo(s)
+      </p>
 
       <button
         item-end
