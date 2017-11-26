@@ -9,6 +9,12 @@ import { ImagePersistence } from
 import { Picture } from '../../models/picture-model';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
 
+enum CameraReadyStatus {
+  ViewDataNotLoaded = "Can't take photo - data not loaded",
+  NotOnDevice = "Can't take photo - not on device",
+  Ready = "Ready"
+}
+
 @IonicPage()
 @Component({
   selector: 'page-products',
@@ -45,6 +51,7 @@ export class ProductsPage extends ListPage<Product> {
 
   addPhotoTo(product: Product) {
     if (this.cantTakePhoto()) {
+      this.alerter.presentError(this.cameraReadyStatus());
       return false;
     }
 
@@ -56,17 +63,19 @@ export class ProductsPage extends ListPage<Product> {
   }
 
   private cantTakePhoto(): boolean {
+    return this.cameraReadyStatus() !== CameraReadyStatus.Ready;
+  }
+
+  private cameraReadyStatus(): CameraReadyStatus {
     if(!this.isListDataLoaded) {
-      console.log("can't take photo - data not loaded")
-      return true;
+      return CameraReadyStatus.ViewDataNotLoaded;
     }
 
     if(!this.platform.is('cordova')){
-      console.log("can't take photo - not on device");
-      return true;
+      return CameraReadyStatus.NotOnDevice;
     }
 
-    return false;
+    return CameraReadyStatus.Ready;
   }
 
   private handleImageCapture(product: Product, imagePath: string): void {
