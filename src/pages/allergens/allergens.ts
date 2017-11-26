@@ -4,6 +4,7 @@ import { AllergensProvider } from '../../providers/allergens/allergens';
 import { Allergen } from '../../models/allergen-model';
 import { ListPage } from '../list-page';
 import { SaveDialogProvider } from '../../providers/save-dialog/save-dialog';
+import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
 
 @IonicPage()
 @Component({
@@ -14,9 +15,10 @@ export class AllergensPage extends ListPage {
   private allergens: Allergen[] = [];
 
   constructor(platform: Platform, private allergensProvider: AllergensProvider,
-              private saveDialogProvider: SaveDialogProvider) {
+              private saveDialogProvider: SaveDialogProvider, private alerter: GenericAlerter) {
     super(platform, allergensProvider);
     this.handleAddAllergen = this.handleAddAllergen.bind(this);
+    this.save = this.save.bind(this);
   }
 
   ionViewDidLoad() {
@@ -44,6 +46,12 @@ export class AllergensPage extends ListPage {
       .allergensProvider
       .remove(allergen, this.allergens)
       .then((allergens: Allergen[]) => this.allergens = allergens);
+  }
+
+  edit(allergen: Allergen): void {
+    this
+      .alerter
+      .presentRename(allergen, this.save);
   }
 
   save() {
