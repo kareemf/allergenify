@@ -5,7 +5,8 @@ import { Allergen } from "./allergen-model";
 export class Product extends BaseModel {
 
   static from(data: any): Product {
-    return new Product(data.name, data.dateAdded, data.pictures);
+    const pictures = data.pictures.map(Picture.from);
+    return new Product(data.name, data.dateAdded, pictures);
   }
 
   constructor(public name: string, public dateAdded: Date = new Date(),

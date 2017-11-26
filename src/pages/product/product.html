@@ -33,6 +33,13 @@
       <p>{{picture.dateAdded}}</p>
 
       <button
+        *ngIf="picture.text"
+        clear
+        (click)="viewText(picture)">
+        View Text
+      </button>
+
+      <button
         item-end
         ion-button
         clear

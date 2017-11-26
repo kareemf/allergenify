@@ -43,18 +43,26 @@ export class ProductPage {
     this.onSave(this.product);
   }
 
+  viewText(picture: Picture): void {
+    const title: string = `Text Extracted From ${picture.name}`;
+
+    this.alerter.present(title, picture.text);
+  }
+
   scanPicture(picture: Picture): void {
     console.log('scanning picture', picture);
 
     this
       .ocrProvider
       .extractText(picture)
-      .then(text => this.handleTextExtraction(text))
+      .then(text => this.handleTextExtraction(picture, text))
       .catch(error => this.handleTextExtractionError(error));
   }
 
-  private handleTextExtraction(text: string): void {
+  private handleTextExtraction(picture: Picture, text: string): void {
     console.log("text extraction produced", text);
+
+    picture.text = text;
 
     this
       .allergensProvider
