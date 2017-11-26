@@ -57,11 +57,10 @@ export class ProductsPage extends ListPage<Product> {
   }
 
   private cantTakePhoto(): boolean {
-    // TODO: reenable after device debugging works
-    // if(!this.isListDataLoaded) {
-    //   console.log("can't take photo - data not loaded")
-    //   return true;
-    // }
+    if(!this.isListDataLoaded) {
+      console.log("can't take photo - data not loaded")
+      return true;
+    }
 
     if(!this.platform.is('cordova')){
       console.log("can't take photo - not on device");
