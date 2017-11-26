@@ -1,12 +1,21 @@
 import { StorageDataProvider } from "../providers/storage-data";
 import { Platform } from "ionic-angular";
+import { BaseModel } from "../models/base-model";
+import { GenericAlerter } from "../providers/generic-alerter/generic-alerter";
+import { SaveDialogProvider } from "../providers/save-dialog/save-dialog";
 
-export abstract class ListPage {
+export abstract class ListPage<T extends BaseModel> {
+  protected items: T[] = [];
   protected isListDataLoaded: boolean = false;
 
-  constructor (protected platform: Platform, private dataProvider: StorageDataProvider) {}
+  constructor (protected entityType, protected platform: Platform, private dataProvider: StorageDataProvider,
+               protected alerter: GenericAlerter, private saveDialogProvider: SaveDialogProvider) {
+    this.handleAddItem = this.handleAddItem.bind(this);
+    this.save = this.save.bind(this);
+  }
 
   ionViewDidLoad() {
+    console.log(`ionViewDidLoad ${this.entityType}Page`);
     this.setupPlatformReady();
   }
 
@@ -17,7 +26,7 @@ export abstract class ListPage {
     });
   }
 
-  private loadItems<T>(): void {
+  private loadItems(): void {
     this
       .dataProvider
       .getItems()
@@ -25,17 +34,47 @@ export abstract class ListPage {
       .catch(error => this.handleItemsLoadErorr(error));
   }
 
-  private handleItemsLoad<T>(items: T[]): void {
+  private handleItemsLoad(items: T[]): void {
     console.log("loaded items", items);
 
     this.isListDataLoaded = true;
-    this.postDataLoad(items);
+    this.items = items;
   }
-
-  protected abstract postDataLoad<T>(items: T[]);
 
   private handleItemsLoadErorr(error: any): void {
     console.error("load error:", error);
     this.isListDataLoaded = true;
+
+    this.alerter.presentError(`Failed to load ${this.entityType}s`);
+  }
+
+  save() {
+    this.dataProvider.save(this.items);
+  }
+
+  add(): void {
+    this.saveDialogProvider.present(`Add An ${this.entityType}`, this.handleAddItem);
+  }
+
+  private handleAddItem(name: string): void {
+    const item: T = this.createItem(name);
+
+    this.items.push(item);
+    this.save();
+  }
+
+  protected abstract createItem(name)
+
+  remove(item: T): void {
+    this
+      .dataProvider
+      .remove(item, this.items)
+      .then((items: T[]) => this.items = items);
+  }
+
+  edit(item: T): void {
+    this
+      .alerter
+      .presentRename(item, this.save);
   }
 }

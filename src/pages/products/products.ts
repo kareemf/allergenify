@@ -1,4 +1,3 @@
-// TODO: dedupe this code further
 import { Component } from '@angular/core';
 import { IonicPage, Platform, NavController } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
@@ -9,7 +8,6 @@ import { SaveDialogProvider } from '../../providers/save-dialog/save-dialog';
 import { ImagePersistence } from
 '../../providers/image-persistence/image-persistence';
 import { Picture } from '../../models/picture-model';
-import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
 
 @IonicPage()
@@ -17,7 +15,7 @@ import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter'
   selector: 'page-products',
   templateUrl: 'products.html',
 })
-export class ProductsPage extends ListPage {
+export class ProductsPage extends ListPage<Product> {
   private static cameraOptions = {
     quality: 100,
     destinationType: 1, //return a path to the image on the device
@@ -27,45 +25,14 @@ export class ProductsPage extends ListPage {
     saveToPhotoAlbum: true //save a copy to the users photo album as well
   };
 
-  private products: Product[] = [];
-
-  constructor(protected platform: Platform, private productsProvider: ProductsProvider,
-              private saveDialogProvider: SaveDialogProvider, private camera: Camera,
-              private imagePersistence: ImagePersistence, private alerter: GenericAlerter,
-              private navController: NavController) {
-    super(platform, productsProvider);
-    this.handleAddProduct = this.handleAddProduct.bind(this);
+  constructor(protected platform: Platform, productsProvider: ProductsProvider,
+              protected alerter: GenericAlerter, saveDialogProvider: SaveDialogProvider,
+              private navController: NavController, private camera: Camera, private imagePersistence: ImagePersistence) {
+    super('Product', platform, productsProvider, alerter, saveDialogProvider);
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ProductsPage');
-    super.ionViewDidLoad();
-  }
-
-  protected postDataLoad(items) {
-    this.products = items;
-  }
-
-  add(): void {
-    this.saveDialogProvider.present('Add An Product', this.handleAddProduct);
-  }
-
-  private handleAddProduct(name: string): void {
-    const product = new Product(name);
-
-    this.products.push(product);
-    this.save();
-  }
-
-  save() {
-    this.productsProvider.save(this.products);
-  }
-
-  remove(product: Product): void {
-    this
-      .productsProvider
-      .remove(product, this.products)
-      .then((products: Product[]) => this.products = products);
+  protected createItem(name): Product {
+    return new Product(name);
   }
 
   view(product: Product): void {
