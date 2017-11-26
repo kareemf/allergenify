@@ -2,14 +2,13 @@ import { StorageDataProvider } from "../providers/storage-data";
 import { Platform } from "ionic-angular";
 import { BaseModel } from "../models/base-model";
 import { GenericAlerter } from "../providers/generic-alerter/generic-alerter";
-import { SaveDialogProvider } from "../providers/save-dialog/save-dialog";
 
 export abstract class ListPage<T extends BaseModel> {
   protected items: T[] = [];
   protected isListDataLoaded: boolean = false;
 
   constructor (protected entityType, protected platform: Platform, private dataProvider: StorageDataProvider,
-               protected alerter: GenericAlerter, private saveDialogProvider: SaveDialogProvider) {
+               protected alerter: GenericAlerter) {
     this.handleAddItem = this.handleAddItem.bind(this);
     this.save = this.save.bind(this);
   }
@@ -53,7 +52,7 @@ export abstract class ListPage<T extends BaseModel> {
   }
 
   add(): void {
-    this.saveDialogProvider.present(`Add An ${this.entityType}`, this.handleAddItem);
+    this.alerter.presentCreate(`Add An ${this.entityType}`, this.handleAddItem);
   }
 
   private handleAddItem(name: string): void {

@@ -9,6 +9,26 @@ export class GenericAlerter {
     console.log('Hello GenericAlerter');
   }
 
+  presentCreate(title: string, onConfirm: (any) => void): void {
+    this
+      .alertController
+      .create({
+        title,
+        message: '',
+        inputs: [{ name: 'name'}],
+        buttons: [
+          {
+            text: 'Cancel'
+          },
+          {
+            text: 'Save',
+            handler: (inputs) => onConfirm(inputs.name)
+          }
+        ]
+      })
+      .present();
+  }
+
   presentRename<T extends BaseModel>(entity: T, onRename: (entity: T, newName: string) => void): void {
     this
       .alertController
@@ -33,8 +53,8 @@ export class GenericAlerter {
             }
           }
         ]
-    })
-    .present();
+      })
+      .present();
   }
 
   presentConfirmation(message: string) {

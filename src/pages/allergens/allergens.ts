@@ -3,7 +3,6 @@ import { IonicPage, Platform } from 'ionic-angular';
 import { AllergensProvider } from '../../providers/allergens/allergens';
 import { Allergen } from '../../models/allergen-model';
 import { ListPage } from '../list-page';
-import { SaveDialogProvider } from '../../providers/save-dialog/save-dialog';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
 
 @IonicPage()
@@ -13,8 +12,8 @@ import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter'
 })
 export class AllergensPage extends ListPage<Allergen> {
   constructor(protected platform: Platform, allergensProvider: AllergensProvider,
-              protected alerter: GenericAlerter, saveDialogProvider: SaveDialogProvider) {
-    super('Allergen', platform, allergensProvider, alerter, saveDialogProvider);
+              protected alerter: GenericAlerter) {
+    super('Allergen', platform, allergensProvider, alerter);
   }
 
   protected createItem(name): Allergen {

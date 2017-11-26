@@ -14,7 +14,6 @@ import { File } from '@ionic-native/file';
 
 import { AllergensProvider } from '../providers/allergens/allergens';
 import { ProductsProvider } from '../providers/products/products';
-import { SaveDialogProvider } from '../providers/save-dialog/save-dialog';
 import { ImagePersistence } from '../providers/image-persistence/image-persistence';
 import { OcrProvider } from '../providers/ocr/ocr';
 import { GenericAlerter } from '../providers/generic-alerter/generic-alerter';
@@ -44,7 +43,6 @@ import { GenericAlerter } from '../providers/generic-alerter/generic-alerter';
     File,
     AllergensProvider,
     ProductsProvider,
-    SaveDialogProvider,
     ImagePersistence,
     OcrProvider,
     GenericAlerter

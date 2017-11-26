@@ -4,7 +4,6 @@ import { Camera } from '@ionic-native/camera';
 import { ProductsProvider } from '../../providers/products/products';
 import { Product } from '../../models/product-model';
 import { ListPage } from '../list-page';
-import { SaveDialogProvider } from '../../providers/save-dialog/save-dialog';
 import { ImagePersistence } from
 '../../providers/image-persistence/image-persistence';
 import { Picture } from '../../models/picture-model';
@@ -26,9 +25,9 @@ export class ProductsPage extends ListPage<Product> {
   };
 
   constructor(protected platform: Platform, productsProvider: ProductsProvider,
-              protected alerter: GenericAlerter, saveDialogProvider: SaveDialogProvider,
-              private navController: NavController, private camera: Camera, private imagePersistence: ImagePersistence) {
-    super('Product', platform, productsProvider, alerter, saveDialogProvider);
+              protected alerter: GenericAlerter,private navController: NavController,
+              private camera: Camera, private imagePersistence: ImagePersistence) {
+    super('Product', platform, productsProvider, alerter);
   }
 
   protected createItem(name): Product {
