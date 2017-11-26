@@ -10,7 +10,7 @@ import { ImagePersistence } from
 '../../providers/image-persistence/image-persistence';
 import { Picture } from '../../models/picture-model';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
-import { GenericAlerterProvider } from '../../providers/generic-alerter/generic-alerter';
+import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
 
 @IonicPage()
 @Component({
@@ -31,7 +31,7 @@ export class ProductsPage extends ListPage {
 
   constructor(protected platform: Platform, private productsProvider: ProductsProvider,
               private saveDialogProvider: SaveDialogProvider, private camera: Camera,
-              private imagePersistence: ImagePersistence, private alerter: GenericAlerterProvider,
+              private imagePersistence: ImagePersistence, private alerter: GenericAlerter,
               private navController: NavController) {
     super(platform, productsProvider);
     this.handleAddProduct = this.handleAddProduct.bind(this);
