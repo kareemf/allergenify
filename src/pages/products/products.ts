@@ -38,7 +38,9 @@ export class ProductsPage extends ListPage<Product> {
   view(product: Product): void {
     this.navController.push('ProductPage', {
       product,
-      onSave: () => this.save()
+      onSave: () => this.save(),
+      onEdit: () => this.edit(product),
+      onPicture: () => this.addPhotoTo(product)
     });
   }
 

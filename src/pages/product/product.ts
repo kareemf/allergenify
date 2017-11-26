@@ -15,20 +15,30 @@ import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter'
 export class ProductPage {
   private product: Product;
   private onSave: (product: Product) => void;
+  private onEdit: (product: Product) => void;
+  private onPicture: (product: Product) => void;
 
   constructor(private navParams: NavParams, private ocrProvider: OcrProvider,
               private allergensProvider: AllergensProvider, private alerter: GenericAlerter,) {
     this.product = this.navParams.get('product');
     this.onSave = this.navParams.get('onSave');
+    this.onEdit = this.navParams.get('onEdit');
+    this.onPicture = this.navParams.get('onPicture');
   }
-
-  //TODO: edit name and add picture from this screen
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProductPage');
   }
 
-  removePicture(picture: Picture) {
+  edit(): void {
+    this.onEdit(this.product);
+  }
+
+  addPicture(): void {
+    this.onPicture(this.product);
+  }
+
+  removePicture(picture: Picture): void {
     this.product.removePicture(picture);
     this.onSave(this.product);
   }

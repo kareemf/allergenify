@@ -2,8 +2,24 @@
 
   <ion-navbar>
     <ion-title>{{product.name}}</ion-title>
-  </ion-navbar>
 
+    <ion-buttons end>
+      <button
+        ion-button
+        icon-only
+        (click)="addPicture()">
+        <ion-icon name="camera"></ion-icon>
+      </button>
+
+      <button
+        ion-button
+        icon-only
+        (click)="edit()">
+        <ion-icon name="brush"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
 </ion-header>
 
 
