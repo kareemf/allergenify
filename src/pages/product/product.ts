@@ -17,7 +17,7 @@ import { ProductsProvider } from '../../providers/products/products';
   templateUrl: 'product.html',
 })
 export class ProductPage {
-  private product: Product | any = {};
+  private product: Product = Product.from({});
   private onSave: (product: Product) => void;
   private onEdit: (product: Product) => void;
   private onPicture: (product: Product) => void;

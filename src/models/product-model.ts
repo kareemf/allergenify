@@ -11,8 +11,13 @@ enum Status {
 export class Product extends BaseModel {
 
   static from(data: any): Product {
-    const pictures = data.pictures.map(Picture.from);
-    const allergens = data.allergens.map(Allergen.from);
+    const {
+      pictures: _pictures,
+      allergens: _allergens
+    } = data;
+
+    const pictures  = _pictures  ? _pictures.map(Picture.from) : [];
+    const allergens = _allergens ? _allergens.map(Allergen.from): [];
 
     return new Product(data.name, data.dateAdded, data.dateScanned, pictures, allergens);
   }
