@@ -1,3 +1,4 @@
+import uuidv4 from 'uuid/v4';
 import { BaseModel } from "./base-model";
 import { Picture } from "./picture-model";
 import { Allergen } from "./allergen-model";
@@ -19,12 +20,12 @@ export class Product extends BaseModel {
     const pictures  = _pictures  ? _pictures.map(Picture.from) : [];
     const allergens = _allergens ? _allergens.map(Allergen.from): [];
 
-    return new Product(data.name, data.dateAdded, data.dateScanned, pictures, allergens);
+    return new Product(data.name, data.id, data.dateAdded, data.dateScanned, pictures, allergens);
   }
 
-  constructor(public name: string, public dateAdded: Date = new Date(), public dateScanned: Date = null,
+  constructor(public name: string, public id: string = uuidv4(), public dateAdded: Date = new Date(), public dateScanned: Date = null,
               public pictures: Picture[] = [], public allergens: Allergen[] = []) {
-    super(name, dateAdded);
+    super(name, id, dateAdded);
 
     // TODO: remove test data
     this.addPicture(new Picture("/img.png"));

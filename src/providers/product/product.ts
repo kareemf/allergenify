@@ -34,8 +34,7 @@ export class ProductProvider {
   }
 
   private updateItem(item: Product, items: Product[]) {
-    // CONSIDER: collisions
-    items.map(_item => _item.slug === item.slug ? item : _item);
-    this.productsProvider.save(items);
+    const updatedItems = items.map(_item => _item.id === item.id ? item : _item);
+    this.productsProvider.save(updatedItems);
   }
 }
