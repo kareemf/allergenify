@@ -7,7 +7,10 @@ import { AllergensProvider } from '../../providers/allergens/allergens';
 import { Allergen } from '../../models/allergen-model';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
 
-@IonicPage()
+@IonicPage({
+  defaultHistory: ['ProductsPage'],
+  segment: 'products/:id'
+})
 @Component({
   selector: 'page-product',
   templateUrl: 'product.html',
