@@ -6,24 +6,24 @@ import { OcrProvider } from '../../providers/ocr/ocr';
 import { AllergensProvider } from '../../providers/allergens/allergens';
 import { Allergen } from '../../models/allergen-model';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
+import { ProductsProvider } from '../../providers/products/products';
 
 @IonicPage({
   defaultHistory: ['ProductsPage'],
-  segment: 'products/:id'
+  segment: 'products/:slug'
 })
 @Component({
   selector: 'page-product',
   templateUrl: 'product.html',
 })
 export class ProductPage {
-  private product: Product;
+  private product: Product | any = {};
   private onSave: (product: Product) => void;
   private onEdit: (product: Product) => void;
   private onPicture: (product: Product) => void;
 
-  constructor(private navParams: NavParams, private ocrProvider: OcrProvider,
+  constructor(private navParams: NavParams, private ocrProvider: OcrProvider, private productsProvider: ProductsProvider,
               private allergensProvider: AllergensProvider, private alerter: GenericAlerter,) {
-    this.product = this.navParams.get('product');
     this.onSave = this.navParams.get('onSave');
     this.onEdit = this.navParams.get('onEdit');
     this.onPicture = this.navParams.get('onPicture');
@@ -31,6 +31,30 @@ export class ProductPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProductPage');
+
+    const slug = this.navParams.get('slug');
+
+    this
+      .productsProvider
+      .getItem(slug)
+      .then(product => this.handleProductLoad(product))
+      .catch(error => this.handleProductLoadError(error, slug));
+  }
+
+  handleProductLoad(product: Product) {
+    console.log(`loaded product ${product}`);
+    this.product = product;
+  }
+
+  private handleProductLoadError(error: any, slug: string) {
+    const message = `Failed to load product ${slug}`
+    this.logAndPresentError(error, message.toLowerCase(), message);
+  }
+
+  private logAndPresentError(error: any, logMessage: string, displasyMessasge: string): void {
+    console.error(logMessage, error);
+
+    this.alerter.presentError(displasyMessasge);
   }
 
   edit(): void {
@@ -102,15 +126,12 @@ export class ProductPage {
   }
 
   private handleAllergenCheckError(error: any): void {
-    console.error("allergen check error", error);
+    this.logAndPresentError(error,'allergen check error', 'Failed to process image');
 
-    this.alerter.presentError('Failed to process image');
   }
 
   private handleTextExtractionError(error: any): void {
-    console.error("text extraction error", error);
-
-    this.alerter.presentError('Failed to process text from image');
+    this.logAndPresentError(error,'text extraction error', 'Failed to process text from image');
   }
 
 }
