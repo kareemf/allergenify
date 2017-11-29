@@ -13,18 +13,4 @@ export class ProductsProvider extends StorageDataProvider {
   getItems(): Promise<Product[]> {
     return super._getItems<Product>(Product.from);
   }
-
-  getItem(slug: string): Promise<Product> {
-    return this
-      .getItems()
-      .then((products: Product[]) => this.geItem(slug, products));
-  }
-
-  private geItem(slug: string, items: Product[]): Product {
-    const item = items.find(item => item.slug === slug);
-
-    if (item){ return item; }
-
-    throw new Error(`Unable to find ${slug} in ${items}`);
-  }
 }

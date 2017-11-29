@@ -18,6 +18,7 @@ import { ProductsProvider } from '../providers/products/products';
 import { ImagePersistence } from '../providers/image-persistence/image-persistence';
 import { OcrProvider } from '../providers/ocr/ocr';
 import { GenericAlerter } from '../providers/generic-alerter/generic-alerter';
+import { ProductProvider } from '../providers/product/product';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { GenericAlerter } from '../providers/generic-alerter/generic-alerter';
     ProductsProvider,
     ImagePersistence,
     OcrProvider,
-    GenericAlerter
+    GenericAlerter,
+    ProductProvider
   ]
 })
 export class AppModule {}

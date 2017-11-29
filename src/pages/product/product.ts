@@ -6,7 +6,7 @@ import { OcrProvider } from '../../providers/ocr/ocr';
 import { AllergensProvider } from '../../providers/allergens/allergens';
 import { Allergen } from '../../models/allergen-model';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
-import { ProductsProvider } from '../../providers/products/products';
+import { ProductProvider } from '../../providers/product/product';
 
 @IonicPage({
   defaultHistory: ['ProductsPage'],
@@ -18,14 +18,10 @@ import { ProductsProvider } from '../../providers/products/products';
 })
 export class ProductPage {
   private product: Product = Product.from({});
-  private onSave: (product: Product) => void;
-  private onEdit: (product: Product) => void;
   private onPicture: (product: Product) => void;
 
-  constructor(private navParams: NavParams, private ocrProvider: OcrProvider, private productsProvider: ProductsProvider,
+  constructor(private navParams: NavParams, private ocrProvider: OcrProvider, private productProvider: ProductProvider,
               private allergensProvider: AllergensProvider, private alerter: GenericAlerter,) {
-    this.onSave = this.navParams.get('onSave');
-    this.onEdit = this.navParams.get('onEdit');
     this.onPicture = this.navParams.get('onPicture');
   }
 
@@ -35,7 +31,7 @@ export class ProductPage {
     const slug = this.navParams.get('slug');
 
     this
-      .productsProvider
+      .productProvider
       .getItem(slug)
       .then(product => this.handleProductLoad(product))
       .catch(error => this.handleProductLoadError(error, slug));
@@ -57,8 +53,10 @@ export class ProductPage {
     this.alerter.presentError(displasyMessasge);
   }
 
-  edit(): void {
-    this.onEdit(this.product);
+  presentEdit(): void {
+    this
+      .alerter
+      .presentRename(this.product, () => this.save);
   }
 
   addPicture(): void {
@@ -67,7 +65,11 @@ export class ProductPage {
 
   removePicture(picture: Picture): void {
     this.product.removePicture(picture);
-    this.onSave(this.product);
+    this.save();
+  }
+
+  save() {
+    this.productProvider.save(this.product);
   }
 
   viewText(picture: Picture): void {
@@ -122,7 +124,7 @@ export class ProductPage {
 
   private handleAllergensFound(allergens: Allergen[]): void {
     this.product.allergens = allergens;
-    this.onSave(this.product);
+    this.save();
   }
 
   private handleAllergenCheckError(error: any): void {
