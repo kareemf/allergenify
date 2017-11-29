@@ -56,7 +56,7 @@ export class ProductPage {
   presentEdit(): void {
     this
       .alerter
-      .presentRename(this.product, () => this.save);
+      .presentRename(this.product, () => this.save());
   }
 
   addPicture(): void {
