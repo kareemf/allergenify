@@ -49,7 +49,7 @@ export class OcrProvider {
   private static BASE_VISION_API_URL= "https://vision.googleapis.com/v1/images:annotate?key=";
 
   constructor(private httpClient: HttpClient) {
-    this.removeBase64Metadata = this.removeBase64Metadata.bind(this);
+    this.removeBase64UrlHeader = this.removeBase64UrlHeader.bind(this);
     this.getDocumentTextRequestBody = this.getDocumentTextRequestBody.bind(this);
     this.makeVisionRequest = this.makeVisionRequest.bind(this);
     this.handleVisionResponse = this.handleVisionResponse.bind(this);
@@ -58,7 +58,7 @@ export class OcrProvider {
   extractText(picture: Picture): Promise<string> {
     return this
       .toBase64(picture)
-      .then(this.removeBase64Metadata)
+      .then(this.removeBase64UrlHeader)
       .then(this.getDocumentTextRequestBody)
       .then(this.makeVisionRequest);
 
@@ -79,16 +79,15 @@ export class OcrProvider {
     img.crossOrigin = 'Anonymous';
 
     img.onload = function() {
-      var thing = this as HTMLImageElement;
-      var canvas = document.createElement('CANVAS') as HTMLCanvasElement;
-      var ctx = canvas.getContext('2d');
-      var dataURL;
+      const imgEl = this as HTMLImageElement;
+      const canvas = document.createElement('CANVAS') as HTMLCanvasElement;
+      const ctx = canvas.getContext('2d');
 
-      canvas.height = thing.naturalHeight;
-      canvas.width = thing.naturalWidth;
+      canvas.height = imgEl.naturalHeight;
+      canvas.width = imgEl.naturalWidth;
 
-      ctx.drawImage(thing, 0, 0);
-      dataURL = canvas.toDataURL(prefixedFormat);
+      ctx.drawImage(imgEl, 0, 0);
+      const dataURL = canvas.toDataURL(prefixedFormat);
       callback(dataURL);
     };
 
@@ -100,7 +99,7 @@ export class OcrProvider {
   }
 
   // Removes the 'data:image/jpeg;base64,' part
-  private removeBase64Metadata(base64: string): string {
+  private removeBase64UrlHeader(base64: string): string {
     return base64.replace(/^data:image\/.+;base64,/,"");
   }
 
