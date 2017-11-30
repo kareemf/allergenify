@@ -7,7 +7,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <span
       *ngFor="let word of picture.extractedWords()"
       [ngClass]="{'allergen-match': isAllergenMatch(word)}">

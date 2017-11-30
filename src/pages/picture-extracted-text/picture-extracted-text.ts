@@ -23,8 +23,10 @@ export class PictureExtractedTextPage {
     console.log('ionViewDidLoad PictureExtractedTextPage');
   }
 
+  // TODO: memoize
+  //CONSIDER: tell dont ask on product
   isAllergenMatch(word: string): boolean {
-    return !!this.allergenNames.find(name => name == word);
+    return !!this.allergenNames.find(name => name == word.toLowerCase());
   }
 
 }
