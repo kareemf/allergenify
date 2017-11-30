@@ -11,4 +11,8 @@ export class Picture extends BaseModel {
     super(name, id, dateAdded);
   }
 
+  extractedWords(): string[] {
+    return this.text.split(' ');
+  }
+
 }

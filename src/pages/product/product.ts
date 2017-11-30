@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController } from 'ionic-angular';
 import { Product } from '../../models/product-model';
 import { Picture } from '../../models/picture-model';
 import { OcrProvider } from '../../providers/ocr/ocr';
@@ -20,8 +20,8 @@ export class ProductPage {
   private product: Product = Product.from({});
   private onPicture: (product: Product) => void;
 
-  constructor(private navParams: NavParams, private ocrProvider: OcrProvider, private productProvider: ProductProvider,
-              private allergensProvider: AllergensProvider, private alerter: GenericAlerter,) {
+  constructor(private modalCtrl: ModalController, private navParams: NavParams, private ocrProvider: OcrProvider,
+              private productProvider: ProductProvider, private allergensProvider: AllergensProvider, private alerter: GenericAlerter,) {
     this.onPicture = this.navParams.get('onPicture');
   }
 
@@ -73,9 +73,10 @@ export class ProductPage {
   }
 
   viewText(picture: Picture): void {
-    const title: string = `Text Extracted From ${picture.name}`;
-
-    this.alerter.present(title, picture.text);
+    this
+      .modalCtrl
+      .create('PictureExtractedTextPage', { picture, product: this.product })
+      .present();
   }
 
   scanPicture(picture: Picture): void {

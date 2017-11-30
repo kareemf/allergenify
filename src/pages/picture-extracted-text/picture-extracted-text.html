@@ -1,0 +1,16 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Text Extracted From {{picture.name}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <span
+      *ngFor="let word of picture.extractedWords()"
+      [ngClass]="{'allergen-match': isAllergenMatch(word)}">
+    {{word}}
+  </span>
+</ion-content>
