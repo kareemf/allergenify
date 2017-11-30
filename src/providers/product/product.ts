@@ -9,19 +9,19 @@ export class ProductProvider {
     console.log('Hello ProductProvider Provider');
   }
 
-  getItem(slug: string): Promise<Product> {
+  getItem(id: string): Promise<Product> {
     return this
       .productsProvider
       .getItems()
-      .then((products: Product[]) => this.pluckItem(slug, products));
+      .then((products: Product[]) => this.pluckItem(id, products));
   }
 
-  private pluckItem(slug: string, items: Product[]): Product {
-    const item = items.find(item => item.slug === slug);
+  private pluckItem(id: string, items: Product[]): Product {
+    const item = items.find(item => item.id === id);
 
     if (item){ return item; }
 
-    throw new Error(`Unable to find ${slug} in ${items}`);
+    throw new Error(`Unable to find ${id} in ${items}`);
   }
 
   save(product: Product) {

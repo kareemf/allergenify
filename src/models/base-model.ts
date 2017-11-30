@@ -8,8 +8,4 @@ export class BaseModel {
     static from(data: any): BaseModel {
       return new BaseModel(data.name, data.id, data.dateAdded);
     }
-
-    get slug() {
-      return this.name.replace(' ', '-').toLowerCase();
-    }
   }

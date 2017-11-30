@@ -42,7 +42,7 @@ export class ProductsPage extends ListPage<Product> {
 
   view(product: Product): void {
     this.navController.push('ProductPage', {
-      slug: product.slug,
+      id: product.id,
       onPicture: () => this.addPhotoTo(product)
     });
   }

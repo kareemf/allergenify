@@ -10,7 +10,7 @@ import { ProductProvider } from '../../providers/product/product';
 
 @IonicPage({
   defaultHistory: ['ProductsPage'],
-  segment: 'products/:slug'
+  segment: 'products/:id'
 })
 @Component({
   selector: 'page-product',
@@ -28,13 +28,13 @@ export class ProductPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProductPage');
 
-    const slug = this.navParams.get('slug');
+    const id = this.navParams.get('id');
 
     this
       .productProvider
-      .getItem(slug)
+      .getItem(id)
       .then(product => this.handleProductLoad(product))
-      .catch(error => this.handleProductLoadError(error, slug));
+      .catch(error => this.handleProductLoadError(error, id));
   }
 
   handleProductLoad(product: Product) {
@@ -42,8 +42,8 @@ export class ProductPage {
     this.product = product;
   }
 
-  private handleProductLoadError(error: any, slug: string) {
-    const message = `Failed to load product ${slug}`
+  private handleProductLoadError(error: any, id: string) {
+    const message = `Failed to load product ${id}`
     this.logAndPresentError(error, message.toLowerCase(), message);
   }
 
