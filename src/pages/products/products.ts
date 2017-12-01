@@ -12,13 +12,25 @@ import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter'
   templateUrl: 'products.html',
 })
 export class ProductsPage extends ListPage<Product> {
-  constructor(protected platform: Platform, productsProvider: ProductsProvider,
+  constructor(protected platform: Platform, private productsProvider: ProductsProvider,
               protected alerter: GenericAlerter,private navController: NavController) {
     super('Product', platform, productsProvider, alerter);
   }
 
   protected createItem(name): Product {
     return new Product(name);
+  }
+
+  protected loadItems(): void {
+    super.loadItems();
+    this.monitorProductsForUpdates();
+  }
+
+  private monitorProductsForUpdates() {
+    this
+      .productsProvider
+      .updates()
+      .subscribe((items: Product[]) => this.handleItemsLoad(items));
   }
 
   view(product: Product): void {

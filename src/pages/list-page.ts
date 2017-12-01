@@ -25,7 +25,7 @@ export abstract class ListPage<T extends BaseModel> {
     });
   }
 
-  private loadItems(): void {
+  protected loadItems(): void {
     this
       .dataProvider
       .getItems()
@@ -33,14 +33,14 @@ export abstract class ListPage<T extends BaseModel> {
       .catch(error => this.handleItemsLoadErorr(error));
   }
 
-  private handleItemsLoad(items: T[]): void {
+  protected handleItemsLoad(items: T[]): void {
     console.log("loaded items", items);
 
     this.isListDataLoaded = true;
     this.items = items;
   }
 
-  private handleItemsLoadErorr(error: any): void {
+  protected handleItemsLoadErorr(error: any): void {
     console.error("load error:", error);
     this.isListDataLoaded = true;
 

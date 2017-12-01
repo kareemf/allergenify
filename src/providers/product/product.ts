@@ -11,9 +11,14 @@ export class ProductProvider {
 
   getItem(id: string): Promise<Product> {
     return this
-      .productsProvider
-      .getItems()
+      .fetchItems()
       .then((products: Product[]) => this.pluckItem(id, products));
+  }
+
+  private fetchItems() {
+    return this
+      .productsProvider
+      .getItems();
   }
 
   private pluckItem(id: string, items: Product[]): Product {
@@ -25,15 +30,16 @@ export class ProductProvider {
   }
 
   save(product: Product) {
-    console.log(`saving product ${product}`);
+    console.log('saving product', product);
 
     return this
-      .productsProvider
-      .getItems()
+      .fetchItems()
       .then((products: Product[]) => this.updateItem(product, products));
   }
 
   private updateItem(item: Product, items: Product[]) {
+    console.log('updateItem', item, 'in items', items);
+
     const updatedItems = items.map(_item => _item.id === item.id ? item : _item);
     this.productsProvider.save(updatedItems);
   }
