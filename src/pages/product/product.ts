@@ -5,7 +5,7 @@ import { IonicPage, NavParams, ModalController, Platform } from 'ionic-angular';
 import { Product } from '../../models/product-model';
 import { Picture } from '../../models/picture-model';
 import { OcrProvider } from '../../providers/ocr/ocr';
-import { AllergensProvider } from '../../providers/allergens/allergens';
+import { AllergensProvider } from '../../providers/allergens/allergens-provider';
 import { Allergen } from '../../models/allergen-model';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
 import { ProductProvider } from '../../providers/product/product';

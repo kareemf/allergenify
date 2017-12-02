@@ -13,7 +13,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 
-import { AllergensProvider } from '../providers/allergens/allergens';
+import { AllergensProvider } from '../providers/allergens/allergens-provider';
 import { ProductsProvider } from '../providers/products/products';
 import { ImagePersistence } from '../providers/image-persistence/image-persistence';
 import { OcrProvider } from '../providers/ocr/ocr';
