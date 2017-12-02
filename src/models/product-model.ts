@@ -56,6 +56,14 @@ export class Product extends BaseModel {
     return this.pictures.length;
   }
 
+  hasPictures(): boolean {
+    return this.numPictures() == 0;
+  }
+
+  lastPicture(): Picture|null {
+    return this.hasPictures() ? this.pictures[this.numPictures() - 1] : null;
+  }
+
   get status() {
     if (!this.dateScanned) {
       return Status.NotScanned
