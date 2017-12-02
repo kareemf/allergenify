@@ -194,6 +194,7 @@ export class ProductPage {
       this.presentAllergensDetected(allergens);
       this.handleAllergensFound(allergens);
     }
+    this.save();
   }
 
   private presentAllergensDetected(allergens: Allergen[]) {
@@ -207,7 +208,6 @@ export class ProductPage {
 
   private handleAllergensFound(allergens: Allergen[]): void {
     this.product.allergens = allergens;
-    this.save();
   }
 
   private handleAllergenCheckError(error: any): void {
