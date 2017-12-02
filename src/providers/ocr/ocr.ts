@@ -49,58 +49,15 @@ export class OcrProvider {
   private static BASE_VISION_API_URL= "https://vision.googleapis.com/v1/images:annotate?key=";
 
   constructor(private httpClient: HttpClient) {
-    this.removeBase64UrlHeader = this.removeBase64UrlHeader.bind(this);
     this.getDocumentTextRequestBody = this.getDocumentTextRequestBody.bind(this);
     this.makeVisionRequest = this.makeVisionRequest.bind(this);
     this.handleVisionResponse = this.handleVisionResponse.bind(this);
   }
 
   extractText(picture: Picture): Promise<string> {
-    return this
-      .toBase64(picture)
-      .then(this.removeBase64UrlHeader)
-      .then(this.getDocumentTextRequestBody)
-      .then(this.makeVisionRequest);
+     const req = this.getDocumentTextRequestBody(picture.name);
+     return this.makeVisionRequest(req);
 
-  }
-
-  private toBase64(picture: Picture): Promise<string> {
-    return new Promise((resolve) => {
-      this.toDataURL(picture.name, dataUrl => resolve(dataUrl));
-    });
-  }
-
-  // TODO: parse output format from image extension
-  // TODO: clean
-  // Thanks, S.O.: https://stackoverflow.com/a/20285053/1377016
-  private toDataURL(src, callback, format = 'jpeg'): void {
-    const prefixedFormat = `image/${format}`;
-    var img = new Image();
-    img.crossOrigin = 'Anonymous';
-
-    img.onload = function() {
-      const imgEl = this as HTMLImageElement;
-      const canvas = document.createElement('CANVAS') as HTMLCanvasElement;
-      const ctx = canvas.getContext('2d');
-
-      canvas.height = imgEl.naturalHeight;
-      canvas.width = imgEl.naturalWidth;
-
-      ctx.drawImage(imgEl, 0, 0);
-      const dataURL = canvas.toDataURL(prefixedFormat);
-      callback(dataURL);
-    };
-
-    img.src = src;
-    if (img.complete || img.complete === undefined) {
-      img.src = `data:image/${format};base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==`;
-      img.src = src;
-    }
-  }
-
-  // Removes the 'data:image/jpeg;base64,' part
-  private removeBase64UrlHeader(base64: string): string {
-    return base64.replace(/^data:image\/.+;base64,/,"");
   }
 
   private getDocumentTextRequestBody(base64: string): VisionRequestBody {
