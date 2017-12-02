@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+
 import { IonicPage, NavParams, ModalController, Platform } from 'ionic-angular';
 import { Product } from '../../models/product-model';
 import { Picture } from '../../models/picture-model';
@@ -30,17 +32,21 @@ export class ProductPage {
   private isDataLoaded: boolean = false;
   private product: Product = Product.from({});
 
-  constructor(private platform: Platform, private camera: Camera, private imagePersistence: ImagePersistence,
+  constructor(private platform: Platform, private camera: Camera, private imagePersistence: ImagePersistence, private domSanitizer: DomSanitizer,
               private modalCtrl: ModalController, private navParams: NavParams, private ocrProvider: OcrProvider,
               private productProvider: ProductProvider, private allergensProvider: AllergensProvider, private alerter: GenericAlerter,) {
     this.cameraOptions = {
       quality: 50,
-      destinationType: camera.DestinationType.FILE_URI,
+      destinationType: camera.DestinationType.DATA_URL,
       sourceType: camera.PictureSourceType.CAMERA,
       encodingType: camera.EncodingType.JPEG,
       cameraDirection: camera.Direction.BACK,
       saveToPhotoAlbum: true
     };
+  }
+
+  transform(html) {
+    return this.domSanitizer.bypassSecurityTrustHtml(html);
   }
 
   ionViewDidLoad() {
@@ -129,7 +135,7 @@ export class ProductPage {
 
     this
       .imagePersistence
-      .persist(imagePath)
+      .persist(imagePath, this.cameraOptions)
       .then(persistentPath => this.handleImagePersistence(product, persistentPath))
       .catch(error => this.handleImagePersistenceError(error));
   }

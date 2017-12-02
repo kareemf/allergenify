@@ -28,7 +28,7 @@
   <ion-list>
     <ion-item *ngFor="let picture of product.pictures">
       <ion-thumbnail item-start>
-        <img [src]="picture.name">
+        <img [src]="picture.toData() | toSafeData">
       </ion-thumbnail>
 
       <p>{{picture.dateAdded}}</p>

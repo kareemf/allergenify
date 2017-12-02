@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { File, Entry } from '@ionic-native/file';
 import { Platform } from 'ionic-angular';
-import { CameraOptions, Camera, DestinationType } from '@ionic-native/camera';
+import { CameraOptions, DestinationType } from '@ionic-native/camera';
 
 declare var cordova;
 

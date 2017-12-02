@@ -16,6 +16,7 @@ export class Picture extends BaseModel {
   }
 
   toData() {
+    // CONSIDER storing image format
     return `data:image/jpeg;base64,${this.name}`;
   }
 
