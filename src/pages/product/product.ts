@@ -7,7 +7,7 @@ import { AllergensProvider } from '../../providers/allergens/allergens';
 import { Allergen } from '../../models/allergen-model';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
 import { ProductProvider } from '../../providers/product/product';
-import { Camera } from '@ionic-native/camera';
+import { Camera, DestinationType } from '@ionic-native/camera';
 import { ImagePersistence } from '../../providers/image-persistence/image-persistence';
 
 enum CameraReadyStatus {
@@ -27,7 +27,7 @@ enum CameraReadyStatus {
 export class ProductPage {
   private static cameraOptions = {
     quality: 100,
-    destinationType: 1, //return a path to the image on the device
+    destinationType: DestinationType.FILE_URL,
     sourceType: 1, //use the camera to grab the image
     encodingType: 0, //return the image in jpeg format
     cameraDirection: 1, //front facing camera
