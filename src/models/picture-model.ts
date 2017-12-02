@@ -15,4 +15,8 @@ export class Picture extends BaseModel {
     return this.text.split(' ');
   }
 
+  toData() {
+    return `data:image/jpeg;base64,${this.name}`;
+  }
+
 }

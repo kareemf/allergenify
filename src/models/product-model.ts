@@ -62,7 +62,7 @@ export class Product extends BaseModel {
   }
 
   thumbnail(): string {
-    return this.hasPictures() ? this.lastPicture().base64() : ''
+    return this.hasPictures() ? this.lastPicture().toData() : ''
   }
 
   get status() {
