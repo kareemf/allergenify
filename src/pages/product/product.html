@@ -40,13 +40,17 @@
         View Text
       </button>
 
-      <button
-        item-end
-        ion-button
-        clear
-        (click)="scanPicture(picture)">
-        Scan
-      </button>
+      <span class="scanner" item-end>
+        <ion-spinner  *ngIf="isScanning(picture)" name="dots"></ion-spinner>
+
+        <button
+          *ngIf="!isScanning(picture)"
+          ion-button
+          clear
+          (click)="scanPicture(picture)">
+          Scan
+        </button>
+      </span>
 
       <button
         item-end

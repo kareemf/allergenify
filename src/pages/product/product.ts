@@ -30,6 +30,8 @@ export class ProductPage {
   private cameraOptions: CameraOptions;
 
   private isDataLoaded: boolean = false;
+  private pictureScanningMap: object = {};
+  // TODO: use async pipe?
   private product: Product = Product.from({});
 
   constructor(private platform: Platform, private camera: Camera, private imagePersistence: ImagePersistence, private domSanitizer: DomSanitizer,
@@ -163,19 +165,28 @@ export class ProductPage {
 
   scanPicture(picture: Picture): void {
     console.log('scanning picture', picture);
-
-    this.product.dateScanned = new Date();
+    this.flagScanStart(picture);
 
     this
       .ocrProvider
       .extractText(picture)
       .then(text => this.handleTextExtraction(picture, text))
-      .catch(error => this.handleTextExtractionError(error));
+      .catch(error => this.handleTextExtractionError(error))
+      .then(() => this.flagScanStop(picture));
+  }
+
+  private flagScanStart(picture: Picture) {
+    this.pictureScanningMap[picture.id] = true;
+  }
+
+  private flagScanStop(picture: Picture) {
+    this.pictureScanningMap[picture.id] = false;
   }
 
   private handleTextExtraction(picture: Picture, text: string): void {
     console.log("text extraction produced", text);
 
+    this.product.dateScanned = new Date();
     picture.text = text;
 
     this
@@ -217,6 +228,10 @@ export class ProductPage {
 
   private handleTextExtractionError(error: any): void {
     this.logAndPresentError(error,'text extraction error', 'Failed to process text from image');
+  }
+
+  isScanning(picture: Picture): boolean {
+    return this.pictureScanningMap[picture.id];
   }
 
 }
