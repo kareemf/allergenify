@@ -7,7 +7,7 @@ import { AllergensProvider } from '../../providers/allergens/allergens';
 import { Allergen } from '../../models/allergen-model';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
 import { ProductProvider } from '../../providers/product/product';
-import { Camera, DestinationType } from '@ionic-native/camera';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ImagePersistence } from '../../providers/image-persistence/image-persistence';
 
 enum CameraReadyStatus {
@@ -25,14 +25,7 @@ enum CameraReadyStatus {
   templateUrl: 'product.html',
 })
 export class ProductPage {
-  private static cameraOptions = {
-    quality: 100,
-    destinationType: DestinationType.FILE_URL,
-    sourceType: 1, //use the camera to grab the image
-    encodingType: 0, //return the image in jpeg format
-    cameraDirection: 1, //front facing camera
-    saveToPhotoAlbum: true //save a copy to the users photo album as well
-  };
+  private cameraOptions: CameraOptions;
 
   private isDataLoaded: boolean = false;
   private product: Product = Product.from({});
@@ -40,6 +33,14 @@ export class ProductPage {
   constructor(private platform: Platform, private camera: Camera, private imagePersistence: ImagePersistence,
               private modalCtrl: ModalController, private navParams: NavParams, private ocrProvider: OcrProvider,
               private productProvider: ProductProvider, private allergensProvider: AllergensProvider, private alerter: GenericAlerter,) {
+    this.cameraOptions = {
+      quality: 50,
+      destinationType: camera.DestinationType.FILE_URI,
+      sourceType: camera.PictureSourceType.CAMERA,
+      encodingType: camera.EncodingType.JPEG,
+      cameraDirection: camera.Direction.BACK,
+      saveToPhotoAlbum: true
+    };
   }
 
   ionViewDidLoad() {
@@ -102,7 +103,7 @@ export class ProductPage {
 
     this
       .camera
-      .getPicture(ProductPage.cameraOptions)
+      .getPicture(this.cameraOptions)
       .then(imagePath => this.handleImageCapture(this.product, imagePath))
       .catch(error => this.handleImageCaptureError(error))
   }
