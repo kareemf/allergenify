@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavParams } from 'ionic-angular';
+import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { Picture } from '../../models/picture-model';
 import { Product } from '../../models/product-model';
 
@@ -12,11 +13,11 @@ export class PictureExtractedTextPage {
   picture: Picture;
   allergenNames: string[];
 
-  constructor(public navParams: NavParams) {
+  constructor(private viewController: ViewController, private navParams: NavParams) {
     const product: Product = this.navParams.get('product');
     this.picture = this.navParams.get('picture');
     //CONSIDER: tell dont ask on product
-    this.allergenNames = product.allergens.map(allergen => allergen.name);
+    this.allergenNames = product.allergens.map(allergen => allergen.name.toLowerCase());
   }
 
   ionViewDidLoad() {
@@ -27,6 +28,10 @@ export class PictureExtractedTextPage {
   //CONSIDER: tell dont ask on product
   isAllergenMatch(word: string): boolean {
     return !!this.allergenNames.find(name => name == word.toLowerCase());
+  }
+
+  close(): void {
+    this.viewController.dismiss();
   }
 
 }

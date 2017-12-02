@@ -24,7 +24,7 @@ export class AllergensProvider extends StorageDataProvider {
   private handleAllergensCheck(text: string, allergens: Allergen[]): Allergen[] {
     const tokens = text.split(' ');
 
-    // TODO: new AllergenMatch concept that includes allergen and matching word
+    // CONSIDER: new AllergenMatch concept that includes allergen and matching word
     return allergens.reduce((allTriggeredAllergens, allergen) => {
       const doesContainAllergen: boolean = this.doesCorpusContainAllergen(tokens, allergen);
 
