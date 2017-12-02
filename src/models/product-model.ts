@@ -26,9 +26,6 @@ export class Product extends BaseModel {
   constructor(public name: string, public id: string = uuidv4(), public dateAdded: Date = new Date(), public dateScanned: Date = null,
               public pictures: Picture[] = [], public allergens: Allergen[] = []) {
     super(name, id, dateAdded);
-
-    // TODO: remove test data
-    this.addPicture(new Picture("/img.png"));
   }
 
   addPicture(picture: Picture): void {
@@ -57,11 +54,15 @@ export class Product extends BaseModel {
   }
 
   hasPictures(): boolean {
-    return this.numPictures() == 0;
+    return this.numPictures() > 0;
   }
 
   lastPicture(): Picture|null {
     return this.hasPictures() ? this.pictures[this.numPictures() - 1] : null;
+  }
+
+  thumbnail(): string {
+    return this.hasPictures() ? this.lastPicture().base64() : ''
   }
 
   get status() {
