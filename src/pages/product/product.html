@@ -35,10 +35,13 @@
 
       <button
         *ngIf="picture.text"
+        ion-button
         clear
+        color="light"
         (click)="viewText(picture)">
         View Text
       </button>
+
 
       <span class="scanner" item-end>
         <ion-spinner  *ngIf="isScanning(picture)" name="dots"></ion-spinner>

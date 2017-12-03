@@ -25,10 +25,11 @@
       <ion-thumbnail item-start>
         <img *ngIf="product.hasPictures()" [src]="product.thumbnail() | toSafeData">
       </ion-thumbnail>
+
       <button
         ion-button
         clear
-        color="dark"
+        color="light"
         (click)="view(product)">
         {{product.name}}
       </button>
