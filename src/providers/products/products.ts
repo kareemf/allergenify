@@ -22,7 +22,7 @@ export class ProductsProvider extends StorageDataProvider {
     return super._getItems<Product>(Product.from);
   }
 
-  save<Product>(items): void {
+  save(items): void {
     super.save(items);
     this.subscriber.next(items);
   }
