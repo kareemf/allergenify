@@ -4,7 +4,8 @@ import { BaseModel } from "./base-model";
 export class Allergen extends BaseModel {
 
   static from(data: any): Allergen {
-    return new Allergen(data.name, data.id, data.dateAdded);
+    const dateAdded = data.dataAdded ? new Date(data.dataAdded) : new Date();
+    return new Allergen(data.name, data.id, dateAdded);
   }
 
   constructor(public name: string, public id: string = uuidv4(), public dateAdded: Date = new Date() ) {
