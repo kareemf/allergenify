@@ -50,8 +50,34 @@ describe('Product', () => {
   it('should provide list of allergen names when asked', () => {
     givenScannedProductWithAllergens();
 
+    // when names are pulled
     const allergenNames = product.allergenNames();
+    // then names are returned
     expect(allergenNames).toEqual(['bar'])
+  });
+
+  describe('Matching', () => {
+    let isAllergenMatch: boolean;
+
+    it('should flag word as match', () => {
+      givenScannedProductWithAllergens();
+      whenWordIsChecked('bar');
+      thenMatchIsFound();
+    });
+
+    it('should flag word as match insenitive', () => {
+      givenScannedProductWithAllergens();
+      whenWordIsChecked('Bar');
+      thenMatchIsFound();
+    });
+
+    function whenWordIsChecked(word: string) {
+      isAllergenMatch = product.isAllergenMatch(word);
+    }
+
+    function thenMatchIsFound() {
+      expect(isAllergenMatch).toBeTruthy();
+    }
   });
 
   function givenScannedProductWithAllergens(): void {
