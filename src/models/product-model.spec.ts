@@ -33,12 +33,7 @@ describe('Product', () => {
     });
 
     it('should be SomethingFound if scanned w/ allergens', () => {
-      // given a scanned product w/ no allergens
-      product = Product.from({
-        name: 'foo',
-        dateScanned: new Date(),
-        allergens: [Allergen.from({ name: 'bar' })]
-      });
+      givenScannedProductWithAllergens();
       whenStatusIsChecked();
       thenStatusShouldBe(Status.SomethingFound);
     });
@@ -53,13 +48,17 @@ describe('Product', () => {
   });
 
   it('should provide list of allergen names when asked', () => {
+    givenScannedProductWithAllergens();
+
+    const allergenNames = product.allergenNames();
+    expect(allergenNames).toEqual(['bar'])
+  });
+
+  function givenScannedProductWithAllergens(): void {
     product = Product.from({
       name: 'foo',
       dateScanned: new Date(),
       allergens: [Allergen.from({ name: 'bar' })]
     });
-
-    const allergenNames = product.allergenNames();
-    expect(allergenNames).toEqual(['bar'])
-  });
+  }
 });
