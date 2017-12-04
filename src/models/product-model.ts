@@ -3,7 +3,7 @@ import { BaseModel } from "./base-model";
 import { Picture } from "./picture-model";
 import { Allergen } from "./allergen-model";
 
-enum Status {
+export enum Status {
   NotScanned = "Not Scanned",
   NothingFound = "Nothing Found",
   SomethingFound = "Something Found"
@@ -63,6 +63,19 @@ export class Product extends BaseModel {
 
   thumbnail(): string {
     return this.hasPictures() ? this.lastPicture().toData() : ''
+  }
+
+  // TODO: memoize
+  isAllergenMatch(word: string): boolean {
+    return !!this
+      .allergenNames()
+      .find(name => name == word.toLowerCase());
+  }
+
+  allergenNames(): string[] {
+    return this
+      .allergens
+      .map(allergen => allergen.name.toLowerCase());
   }
 
   get status() {

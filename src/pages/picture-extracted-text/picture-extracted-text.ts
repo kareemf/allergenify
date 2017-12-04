@@ -16,18 +16,10 @@ export class PictureExtractedTextPage {
   constructor(private viewController: ViewController, private navParams: NavParams) {
     const product: Product = this.navParams.get('product');
     this.picture = this.navParams.get('picture');
-    //CONSIDER: tell dont ask on product
-    this.allergenNames = product.allergens.map(allergen => allergen.name.toLowerCase());
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PictureExtractedTextPage');
-  }
-
-  // TODO: memoize
-  //CONSIDER: tell dont ask on product
-  isAllergenMatch(word: string): boolean {
-    return !!this.allergenNames.find(name => name == word.toLowerCase());
   }
 
   close(): void {
