@@ -10,11 +10,12 @@ import { Product } from '../../models/product-model';
   templateUrl: 'picture-extracted-text.html',
 })
 export class PictureExtractedTextPage {
+  product: Product;
   picture: Picture;
   allergenNames: string[];
 
   constructor(private viewController: ViewController, private navParams: NavParams) {
-    const product: Product = this.navParams.get('product');
+    this.product = this.navParams.get('product');
     this.picture = this.navParams.get('picture');
   }
 
@@ -24,6 +25,10 @@ export class PictureExtractedTextPage {
 
   close(): void {
     this.viewController.dismiss();
+  }
+
+  isAllergenMatch(word): boolean {
+    return this.product.isAllergenMatch(word);
   }
 
 }
