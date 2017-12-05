@@ -69,13 +69,13 @@ export class Product extends BaseModel {
   isAllergenMatch(word: string): boolean {
     return !!this
       .allergenNames()
-      .find(name => name == word.toLowerCase());
+      .find(name => name.toLowerCase() == word.toLowerCase());
   }
 
   allergenNames(): string[] {
     return this
       .allergens
-      .map(allergen => allergen.name.toLowerCase());
+      .map(allergen => allergen.name);
   }
 
   get status() {
