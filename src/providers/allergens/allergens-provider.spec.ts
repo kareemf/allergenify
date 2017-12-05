@@ -47,14 +47,7 @@ describe('AllergensProvider', () => {
     testContainsText(done, 'Bar foo baz');
   });
 
-  it('should not match partials', (done) => {
-    // when text is checked for allergens
-    provider
-    .checkForAllergens('Foobar')
-    .then(results => {
-      // then text is matched
-      expect(results.length).toEqual(0);
-      done();
-    });
+  it('should match partials', (done) => {
+    testContainsText(done, 'Foobar');
   });
 });

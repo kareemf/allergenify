@@ -38,7 +38,7 @@ export class AllergensProvider extends StorageDataProvider {
 
   private doesCorpusContainAllergen(tokens: string[], allergen: Allergen): boolean {
     return !!tokens.find(token =>
-      token.toLowerCase() == allergen.name.toLowerCase()
+      token.toLowerCase().includes(allergen.name.toLowerCase())
     );
   }
 }
