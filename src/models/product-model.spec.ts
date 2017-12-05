@@ -47,15 +47,6 @@ describe('Product', () => {
     }
   });
 
-  it('should provide list of allergen names when asked', () => {
-    givenScannedProductWithAllergens();
-
-    // when names are pulled
-    const allergenNames = product.allergenNames();
-    // then names are returned
-    expect(allergenNames).toEqual(['bar'])
-  });
-
   describe('Matching', () => {
     let isAllergenMatch: boolean;
 

@@ -68,14 +68,8 @@ export class Product extends BaseModel {
   // TODO: memoize
   isAllergenMatch(word: string): boolean {
     return !!this
-      .allergenNames()
-      .find(name => name.toLowerCase() == word.toLowerCase());
-  }
-
-  allergenNames(): string[] {
-    return this
       .allergens
-      .map(allergen => allergen.name);
+      .find(allergen => allergen.matches(word));
   }
 
   get status() {

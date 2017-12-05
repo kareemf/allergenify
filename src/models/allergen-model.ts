@@ -12,4 +12,7 @@ export class Allergen extends BaseModel {
     super(name, id, dateAdded);
   }
 
+  matches(word: string): boolean {
+    return word.toLowerCase().includes(this.name.toLowerCase());
+  }
 }

@@ -12,7 +12,6 @@ import { Product } from '../../models/product-model';
 export class PictureExtractedTextPage {
   product: Product;
   picture: Picture;
-  allergenNames: string[];
 
   constructor(private viewController: ViewController, private navParams: NavParams) {
     this.product = this.navParams.get('product');
