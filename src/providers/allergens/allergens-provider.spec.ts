@@ -50,4 +50,10 @@ describe('AllergensProvider', () => {
   it('should match partials', (done) => {
     testContainsText(done, 'Foobar');
   });
+
+  it('should match in presence of non-alpha/special chars', (done) => {
+    testContainsText(done, 'Foobar\n');
+    testContainsText(done, 'Foobar||');
+    testContainsText(done, ':Foo||');
+  });
 });
