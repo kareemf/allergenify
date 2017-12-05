@@ -64,7 +64,7 @@ export class ProductPage {
   }
 
   handleProductLoad(product: Product) {
-    console.log(`loaded product ${product}`);
+    console.log('loaded product', product);
     this.product = product;
     this.isDataLoaded = true;
   }
