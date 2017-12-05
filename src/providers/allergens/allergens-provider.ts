@@ -22,7 +22,7 @@ export class AllergensProvider extends StorageDataProvider {
   }
 
   private handleAllergensCheck(text: string, allergens: Allergen[]): Allergen[] {
-    const tokens = text.split(' ');
+    const tokens = this.tokenizeText(text);
 
     // CONSIDER: new AllergenMatch concept that includes allergen and matching word
     return allergens.reduce((allTriggeredAllergens, allergen) => {
@@ -34,6 +34,12 @@ export class AllergensProvider extends StorageDataProvider {
 
       return allTriggeredAllergens;
     }, []);
+  }
+
+  private tokenizeText(text: string): string[] {
+    return text
+      .split(' ')
+      .filter(token => token != '');
   }
 
   private doesCorpusContainAllergen(tokens: string[], allergen: Allergen): boolean {
