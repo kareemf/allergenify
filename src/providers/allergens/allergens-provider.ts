@@ -3,8 +3,16 @@ import { Storage } from '@ionic/storage';
 import { Allergen } from '../../models/allergen-model';
 import { StorageDataProvider } from '../storage-data';
 
+export interface AllergenFetcher {
+  getItems(): Promise<Allergen[]>;
+}
+
+export interface AllergensChecker {
+  checkForAllergens(text: string): Promise<Allergen[]>;
+}
+
 @Injectable()
-export class AllergensProvider extends StorageDataProvider {
+export class AllergensProvider extends StorageDataProvider implements AllergenFetcher, AllergensChecker {
 
   constructor(storage: Storage) {
     super(storage, 'allergens');
@@ -29,6 +37,7 @@ export class AllergensProvider extends StorageDataProvider {
       const doesContainAllergen: boolean = this.doesCorpusContainAllergen(tokens, allergen);
 
       if (doesContainAllergen) {
+        // console.log("FOUND ALLERGEN", allergen.name);
         return [...allTriggeredAllergens, allergen];
       }
 

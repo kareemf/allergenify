@@ -18,7 +18,7 @@ import { Picture } from '../../models/picture-model';
 import { Allergen } from '../../models/allergen-model';
 
 import { OcrProvider, TextExtracter } from '../../providers/ocr/ocr';
-import { AllergensProvider } from '../../providers/allergens/allergens-provider';
+import { AllergensProvider, AllergenFetcher, AllergensChecker } from '../../providers/allergens/allergens-provider';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
 import { ProductProvider } from '../../providers/product/product';
 import { ProductsProvider } from '../../providers/products/products';
@@ -27,8 +27,6 @@ import { PipesModule } from '../../pipes/pipes.module';
 import { ProductPage } from './product';
 
 class OcrProviderMock implements TextExtracter {
-  private httpClient =  null;
-
   extractText(picture: Picture): Promise<string> {
     return Promise.resolve(`Daily Hydrating Vitamin E & Avocado Protects and defends skin from
     dryness for healthy looking skin. This creamy, non-greasy formula containing Vitamin E and Avocado provides
@@ -44,6 +42,24 @@ class OcrProviderMock implements TextExtracter {
     (PARFUM), CARBOMER, HYDROXYETHYLCELLULOSE, EDIA, BHT, STEARAMIDE AMP, TOCOPHERYL ACETATE, PERSEA GRATISSI.
     (AVOCADO) OIL. ZMES BY Unilever 08031|| QINII Furn
     Sunflower`);
+  }
+}
+
+class AllergensProviderMock implements AllergenFetcher, AllergensChecker {
+  static allergens: Allergen[] = [
+    // strings from extracted text
+    Allergen.from({ name: 'Sunflower' }),
+    Allergen.from({ name: 'Fragrance' }),
+    Allergen.from({ name: 'Parfum' }),
+  ];
+
+  getItems(): Promise<Allergen[]> {
+    return Promise.resolve(AllergensProviderMock.allergens);
+  }
+
+  checkForAllergens(text: string): Promise<Allergen[]> {
+    // TODO: determine what, if anything, should match
+    return Promise.resolve([])
   }
 }
 
@@ -66,7 +82,7 @@ describe('ProductPage', () => {
         { provide: NavParams, useClass: NavParamsMock },
         { provide: Storage, useClass: StorageMock },
         { provide: OcrProvider, useClass: OcrProviderMock },
-        AllergensProvider,
+        { provide: AllergensProvider, useClass: AllergensProviderMock },
         ImagePersistence,
         GenericAlerter,
         ProductProvider,
