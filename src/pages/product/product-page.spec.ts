@@ -66,17 +66,24 @@ class AllergensProviderMock implements AllergenFetcher, AllergensChecker {
 }
 
 class GenericAlerterMock implements Alerter {
+  public static title: String = null;
   public static message: String = null;
 
   present(title: string, message: string, buttons) {
+    console.log("PRESENT", title, message);
+
+    GenericAlerterMock.title = title;
     GenericAlerterMock.message = message;
   }
 
-  presentError(message: string) {}
+  presentError(message: string) {
+    console.log("PRESENT ERROR", message);
+  }
 }
 
 class ProductProviderMock implements ProductFetcher, ProductSaver {
   getItem(id: string): Promise<Product> {
+    console.log("MOCK PRODUCT GET");
     return Promise.resolve(null);
   }
 
