@@ -28,11 +28,11 @@ export abstract class StorageDataProvider {
       .map(data => mapper(data));
   }
 
-  save<T>(items: T[]): void {
+  save<T>(items: T[]): Promise<any> {
     console.log(`saving ${this.itemsKey}`, items);
 
     let json = JSON.stringify(items);
-    this.storage.set(this.itemsKey, json);
+    return this.storage.set(this.itemsKey, json);
   }
 
   remove<T>(item: T, items: T[]): Promise<T[]> {

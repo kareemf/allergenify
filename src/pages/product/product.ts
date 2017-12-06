@@ -87,8 +87,8 @@ export class ProductPage {
       .presentRename(this.product, () => this.save());
   }
 
-  save() {
-    this.productProvider.save(this.product);
+  save(): Promise<any> {
+    return this.productProvider.save(this.product);
   }
 
   viewText(picture: Picture): void {

@@ -22,9 +22,11 @@ export class ProductsProvider extends StorageDataProvider {
     return super._getItems<Product>(Product.from);
   }
 
-  save(items): void {
-    super.save(items);
+  save(items): Promise<any> {
+    const output = super.save(items);
     this.subscriber.next(items);
+
+    return output;
   }
 
   updates(): Observable<Product[]> {

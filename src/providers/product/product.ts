@@ -37,7 +37,7 @@ export class ProductProvider implements ProductFetcher, ProductSaver {
     throw new Error(`Unable to find ${id} in ${items}`);
   }
 
-  save(product: Product) {
+  save(product: Product): Promise<any> {
     console.log('saving product', product);
 
     return this
@@ -45,10 +45,10 @@ export class ProductProvider implements ProductFetcher, ProductSaver {
       .then((products: Product[]) => this.updateItem(product, products));
   }
 
-  private updateItem(item: Product, items: Product[]) {
+  private updateItem(item: Product, items: Product[]): Promise<any> {
     console.log('updateItem', item, 'in items', items);
 
     const updatedItems = items.map(_item => _item.id === item.id ? item : _item);
-    this.productsProvider.save(updatedItems);
+    return this.productsProvider.save(updatedItems);
   }
 }
