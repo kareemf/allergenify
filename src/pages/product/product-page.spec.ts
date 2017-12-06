@@ -21,7 +21,7 @@ import { Allergen } from '../../models/allergen-model';
 import { OcrProvider, TextExtracter } from '../../providers/ocr/ocr';
 import { AllergensProvider, AllergenFetcher, AllergensChecker } from '../../providers/allergens/allergens-provider';
 import { GenericAlerter, Alerter } from '../../providers/generic-alerter/generic-alerter';
-import { ProductProvider } from '../../providers/product/product';
+import { ProductProvider, ProductFetcher, ProductSaver } from '../../providers/product/product';
 import { ProductsProvider } from '../../providers/products/products';
 import { ImagePersistence } from '../../providers/image-persistence/image-persistence';
 import { PipesModule } from '../../pipes/pipes.module';
@@ -75,6 +75,17 @@ class GenericAlerterMock implements Alerter {
   presentError(message: string) {}
 }
 
+class ProductProviderMock implements ProductFetcher, ProductSaver {
+  getItem(id: string): Promise<Product> {
+    return Promise.resolve(null);
+  }
+
+  save(product: Product) {
+    console.log("MOCK PRODUCT SAVE");
+
+  }
+}
+
 describe('ProductPage', () => {
   const ALERT_MESSAGE_SELECTOR = '.alert-message';
 
@@ -101,8 +112,8 @@ describe('ProductPage', () => {
         { provide: OcrProvider, useClass: OcrProviderMock },
         { provide: AllergensProvider, useClass: AllergensProviderMock },
         { provide: GenericAlerter, useClass: GenericAlerterMock },
+        { provide: ProductProvider, useClass: ProductProviderMock },
         ImagePersistence,
-        ProductProvider,
         ProductsProvider,
       ]
     })

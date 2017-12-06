@@ -2,8 +2,16 @@ import { Injectable } from '@angular/core';
 import { ProductsProvider } from '../products/products';
 import { Product } from '../../models/product-model';
 
+export interface ProductFetcher {
+  getItem(id: string): Promise<Product>;
+}
+
+export interface ProductSaver {
+  save(product: Product);
+}
+
 @Injectable()
-export class ProductProvider {
+export class ProductProvider implements ProductFetcher, ProductSaver {
 
   constructor(private productsProvider: ProductsProvider) {
     console.log('Hello ProductProvider Provider');
