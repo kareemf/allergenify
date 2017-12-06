@@ -1,4 +1,4 @@
-import { async, TestBed, ComponentFixture } from '@angular/core/testing';
+import { async, TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 
 import { IonicModule, IonicPage, ModalController  } from 'ionic-angular';
@@ -70,26 +70,30 @@ class GenericAlerterMock implements Alerter {
   public static message: String = null;
 
   present(title: string, message: string, buttons) {
-    console.log("PRESENT", title, message);
+    console.log('PRESENT', title, message);
 
     GenericAlerterMock.title = title;
     GenericAlerterMock.message = message;
   }
 
   presentError(message: string) {
-    console.log("PRESENT ERROR", message);
+    console.log('PRESENT ERROR', message);
   }
 }
 
 class ProductProviderMock implements ProductFetcher, ProductSaver {
+  public static product: Product = null;
+
   getItem(id: string): Promise<Product> {
-    console.log("MOCK PRODUCT GET");
-    return Promise.resolve(null);
+    console.log('MOCK PRODUCT GET');
+
+    return Promise.resolve(ProductProviderMock.product);
   }
 
   save(product: Product) {
-    console.log("MOCK PRODUCT SAVE");
+    console.log('MOCK PRODUCT SAVE', product);
 
+    ProductProviderMock.product = product;
   }
 }
 
@@ -101,7 +105,17 @@ describe('ProductPage', () => {
   let debugElement: DebugElement;
   let nativeElement: HTMLElement;
 
+  let picture: Picture;
+  let product: Product;
+
   beforeEach(async(() => {
+    picture = Picture.from({ name: 'dummy pic' });
+    product = Product.from({ name: 'dummy product' });
+
+    product.addPicture(picture)
+
+    ProductProviderMock.product = product;
+
     TestBed.configureTestingModule({
       declarations: [ProductPage],
       imports: [
@@ -137,19 +151,11 @@ describe('ProductPage', () => {
     expect(component instanceof ProductPage).toBe(true);
   });
 
-  it('should identify allergens in scanned images', () => {
-    const picutre = Picture.from({ name: 'dummy' });
-    component.scanPicture(picutre);
-
-    // debugElement = fixture.debugElement.query(By.css(ALERT_MESSAGE_SELECTOR));
-    // nativeElement = debugElement.nativeElement;
-
-    const genericAlerter = fixture.debugElement.injector.get(GenericAlerter);
-
-    console.log('GenericAlerterMock.message', GenericAlerterMock.message);
-    // console.log('nativeElement.textContent', nativeElement.textContent);
-
-
-    expect(GenericAlerterMock.message).toContain('Sunflower');
-  });
+  it('should identify all allergens in text extracted from scanned images', fakeAsync(() => {
+    component.scanPicture(picture);
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+    expect(ProductProviderMock.product.numAllergens()).toBe(3);
+  }));
 });
