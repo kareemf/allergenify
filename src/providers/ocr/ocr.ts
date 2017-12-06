@@ -3,8 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Picture } from '../../models/picture-model';
 import { VISION_API_KEY  } from './access-config';
 
+export interface TextExtracter {
+  extractText(picture: Picture): Promise<string>;
+}
+
 @Injectable()
-export class OcrProvider {
+export class OcrProvider implements TextExtracter {
   private static BASE_VISION_API_URL= "https://vision.googleapis.com/v1/images:annotate?key=";
 
   constructor(private httpClient: HttpClient) {
