@@ -2,8 +2,13 @@ import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 import { BaseModel } from '../../models/base-model';
 
+export interface Alerter {
+  present(title: string, message: string, buttons);
+  presentError(message: string);
+}
+
 @Injectable()
-export class GenericAlerter {
+export class GenericAlerter implements Alerter {
 
   constructor(private alertController: AlertController) {
     console.log('Hello GenericAlerter');

@@ -1,4 +1,5 @@
-import { async, TestBed } from '@angular/core/testing';
+import { async, TestBed, ComponentFixture } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
 
 import { IonicModule, IonicPage, ModalController  } from 'ionic-angular';
 import { Platform  } from 'ionic-angular';
@@ -19,12 +20,13 @@ import { Allergen } from '../../models/allergen-model';
 
 import { OcrProvider, TextExtracter } from '../../providers/ocr/ocr';
 import { AllergensProvider, AllergenFetcher, AllergensChecker } from '../../providers/allergens/allergens-provider';
-import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
+import { GenericAlerter, Alerter } from '../../providers/generic-alerter/generic-alerter';
 import { ProductProvider } from '../../providers/product/product';
 import { ProductsProvider } from '../../providers/products/products';
 import { ImagePersistence } from '../../providers/image-persistence/image-persistence';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ProductPage } from './product';
+import { By } from '@angular/platform-browser';
 
 class OcrProviderMock implements TextExtracter {
   extractText(picture: Picture): Promise<string> {
@@ -59,13 +61,27 @@ class AllergensProviderMock implements AllergenFetcher, AllergensChecker {
 
   checkForAllergens(text: string): Promise<Allergen[]> {
     // TODO: determine what, if anything, should match
-    return Promise.resolve([])
+    return Promise.resolve(AllergensProviderMock.allergens);
   }
 }
 
+class GenericAlerterMock implements Alerter {
+  public static message: String = null;
+
+  present(title: string, message: string, buttons) {
+    GenericAlerterMock.message = message;
+  }
+
+  presentError(message: string) {}
+}
+
 describe('ProductPage', () => {
-  let fixture;
+  const ALERT_MESSAGE_SELECTOR = '.alert-message';
+
+  let fixture: ComponentFixture<ProductPage>;
   let component: ProductPage;
+  let debugElement: DebugElement;
+  let nativeElement: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -80,11 +96,12 @@ describe('ProductPage', () => {
         { provide: Camera, useClass: CameraMock },
         { provide: File, useClass: FileMock },
         { provide: NavParams, useClass: NavParamsMock },
+        // TODO: not a valid use
         { provide: Storage, useClass: StorageMock },
         { provide: OcrProvider, useClass: OcrProviderMock },
         { provide: AllergensProvider, useClass: AllergensProviderMock },
+        { provide: GenericAlerter, useClass: GenericAlerterMock },
         ImagePersistence,
-        GenericAlerter,
         ProductProvider,
         ProductsProvider,
       ]
@@ -94,6 +111,8 @@ describe('ProductPage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductPage);
     component = fixture.componentInstance;
+    // debugElement = fixture.debugElement.query(By.css(ALERT_MESSAGE_SELECTOR));
+    // nativeElement = debugElement.nativeElement;
   });
 
   it('should be created', () => {
@@ -104,6 +123,15 @@ describe('ProductPage', () => {
     const picutre = Picture.from({ name: 'dummy' });
     component.scanPicture(picutre);
 
-    expect(component instanceof ProductPage).toBe(true);
+    // debugElement = fixture.debugElement.query(By.css(ALERT_MESSAGE_SELECTOR));
+    // nativeElement = debugElement.nativeElement;
+
+    const genericAlerter = fixture.debugElement.injector.get(GenericAlerter);
+
+    console.log('GenericAlerterMock.message', GenericAlerterMock.message);
+    // console.log('nativeElement.textContent', nativeElement.textContent);
+
+
+    expect(GenericAlerterMock.message).toContain('Sunflower');
   });
 });
