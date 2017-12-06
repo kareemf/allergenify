@@ -27,7 +27,7 @@ export class GenericAlerter implements Alerter {
           },
           {
             text: 'Save',
-            handler: (inputs) => onConfirm(inputs.name)
+            handler: (inputs) => onConfirm(inputs.name.trim())
           }
         ]
       })
@@ -50,11 +50,11 @@ export class GenericAlerter implements Alerter {
           },
           {
             text: 'Save',
-            handler: data => {
-              const { name } = data;
-              entity.name = name;
+            handler: inputs => {
+              const { name } = inputs;
+              entity.name = name.trim();
 
-              onRename(entity, name);
+              onRename(entity, entity.name);
             }
           }
         ]
