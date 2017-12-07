@@ -152,6 +152,7 @@ describe('ProductPage', () => {
   it('should identify all allergens in text extracted from scanned images', fakeAsync(() => {
     component.scanPicture(picture);
     fixture.detectChanges();
+
     tick();
     fixture.detectChanges();
 
@@ -159,7 +160,7 @@ describe('ProductPage', () => {
     expect(product.numAllergens()).toBe(3);
   }));
 
-  it('should whether or not an image is being scanned', fakeAsync(() => {
+  it('should track whether or not an image is being scanned', fakeAsync(() => {
     expect(component.isScanning(picture)).toBeFalsy();
 
     component.scanPicture(picture);
