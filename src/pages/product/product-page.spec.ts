@@ -143,8 +143,6 @@ describe('ProductPage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductPage);
     component = fixture.componentInstance;
-    // debugElement = fixture.debugElement.query(By.css(ALERT_MESSAGE_SELECTOR));
-    // nativeElement = debugElement.nativeElement;
   });
 
   it('should be created', () => {
@@ -157,5 +155,19 @@ describe('ProductPage', () => {
     tick();
     fixture.detectChanges();
     expect(ProductProviderMock.product.numAllergens()).toBe(3);
+  }));
+
+  it('should whether or not an image is being scanned', fakeAsync(() => {
+    expect(component.isScanning(picture)).toBeFalsy();
+
+    component.scanPicture(picture);
+    fixture.detectChanges();
+
+    expect(component.isScanning(picture)).toBeTruthy();
+
+    tick();
+    fixture.detectChanges();
+
+    expect(component.isScanning(picture)).toBeFalsy();;
   }));
 });
