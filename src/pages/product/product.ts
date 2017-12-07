@@ -98,9 +98,9 @@ export class ProductPage {
       .present();
   }
 
-  removePicture(picture: Picture): void {
+  removePicture(picture: Picture): Promise<any> {
     this.product.removePicture(picture);
-    this.save();
+    return this.save();
   }
 
   addPicture() {
