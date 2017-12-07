@@ -183,29 +183,31 @@ export class ProductPage {
     this.pictureScanningMap[picture.id] = false;
   }
 
-  private handleTextExtraction(picture: Picture, text: string): void {
+  private handleTextExtraction(picture: Picture, text: string): Promise<void> {
     console.log("text extraction produced", text);
 
     this.product.dateScanned = new Date();
     picture.text = text;
 
-    this
+    return this
       .allergensProvider
       .checkForAllergens(text)
       .then((allergens: Allergen[]) => this.handleAllergenCheck(allergens))
       .catch(error => this.handleAllergenCheckError(error));
   }
 
-  private handleAllergenCheck(allergens: Allergen[]): void {
-    console.log("allergen check results", allergens);
+  private handleAllergenCheck(allergens: Allergen[]): Promise<void> {
+    console.log("allergen check results", JSON.stringify(allergens));
 
     if(!allergens.length) {
       this.alerter.presentConfirmation("No allergens found!");
-    } else {
-      this.presentAllergensDetected(allergens);
-      this.handleAllergensFound(allergens);
+      return Promise.resolve();
     }
-    this.save();
+
+    this.presentAllergensDetected(allergens);
+    this.handleAllergensFound(allergens);
+
+    return this.save();
   }
 
   private presentAllergensDetected(allergens: Allergen[]) {
