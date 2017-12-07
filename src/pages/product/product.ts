@@ -10,7 +10,6 @@ import { Allergen } from '../../models/allergen-model';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
 import { ProductProvider } from '../../providers/product/product';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { ImagePersistence } from '../../providers/image-persistence/image-persistence';
 
 enum CameraReadyStatus {
   ViewDataNotLoaded = "Can't take photo - data not loaded",
@@ -34,7 +33,7 @@ export class ProductPage {
   // TODO: use async pipe?
   private product: Product = Product.from({});
 
-  constructor(private platform: Platform, private camera: Camera, private imagePersistence: ImagePersistence, private domSanitizer: DomSanitizer,
+  constructor(private platform: Platform, private camera: Camera, private domSanitizer: DomSanitizer,
               private modalCtrl: ModalController, private navParams: NavParams, private ocrProvider: OcrProvider,
               private productProvider: ProductProvider, private allergensProvider: AllergensProvider, private alerter: GenericAlerter,) {
     this.cameraOptions = {
@@ -136,19 +135,17 @@ export class ProductPage {
     console.log("captured image at path:", imagePath);
 
     this
-      .imagePersistence
-      .persist(imagePath, this.cameraOptions)
-      .then(persistentPath => this.handleImagePersistence(product, persistentPath))
+      .handleImagePersistence(product, imagePath)
       .catch(error => this.handleImagePersistenceError(error));
   }
 
-  private handleImagePersistence(product: Product, path: string): void {
+  private handleImagePersistence(product: Product, path: string): Promise<any> {
     console.log("image for", product, "persisted to path:", path);
 
     const picture = new Picture(path);
     product.addPicture(picture);
 
-    this.save();
+    return this.save();
   }
 
   private handleImagePersistenceError(error: any): void {

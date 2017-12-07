@@ -6,8 +6,6 @@ import { Platform  } from 'ionic-angular';
 import { PlatformMock } from '../../../test-config/mocks-ionic';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { CameraMock } from '@ionic-native-mocks/camera';
-import { File } from '@ionic-native/file';
-import { FileMock } from '@ionic-native-mocks/file';
 import { NavParams } from 'ionic-angular';
 import { NavParamsMock } from '../../../test-config/nav-params-mock';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -23,7 +21,6 @@ import { AllergensProvider, AllergenFetcher, AllergensChecker } from '../../prov
 import { GenericAlerter, Alerter } from '../../providers/generic-alerter/generic-alerter';
 import { ProductProvider, ProductFetcher, ProductSaver } from '../../providers/product/product';
 import { ProductsProvider } from '../../providers/products/products';
-import { ImagePersistence } from '../../providers/image-persistence/image-persistence';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ProductPage } from './product';
 import { By } from '@angular/platform-browser';
@@ -126,7 +123,6 @@ describe('ProductPage', () => {
       providers: [
         { provide: Platform, useClass: PlatformMock },
         { provide: Camera, useClass: CameraMock },
-        { provide: File, useClass: FileMock },
         { provide: NavParams, useClass: NavParamsMock },
         // TODO: not a valid use
         { provide: Storage, useClass: StorageMock },
@@ -134,7 +130,6 @@ describe('ProductPage', () => {
         { provide: AllergensProvider, useClass: AllergensProviderMock },
         { provide: GenericAlerter, useClass: GenericAlerterMock },
         { provide: ProductProvider, useClass: ProductProviderMock },
-        ImagePersistence,
         ProductsProvider,
       ]
     })
