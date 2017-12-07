@@ -1,30 +1,19 @@
 import uuidv4 from 'uuid/v4';
 import { BaseModel } from "./base-model";
-import { Picture } from "./picture-model";
+import { Picture, Status } from "./picture-model";
 import { Allergen } from "./allergen-model";
-
-export enum Status {
-  NotScanned = "Not Scanned",
-  NothingFound = "Nothing Found",
-  SomethingFound = "Something Found"
-}
 
 export class Product extends BaseModel {
 
   static from(data: any): Product {
-    const {
-      pictures: _pictures,
-      allergens: _allergens
-    } = data;
-
+    const { pictures: _pictures } = data;
     const pictures  = _pictures  ? _pictures.map(Picture.from) : [];
-    const allergens = _allergens ? _allergens.map(Allergen.from): [];
 
-    return new Product(data.name, data.id, data.dateAdded, data.dateScanned, pictures, allergens);
+    return new Product(data.name, data.id, data.dateAdded, pictures);
   }
 
-  constructor(public name: string, public id: string = uuidv4(), public dateAdded: Date = new Date(), public dateScanned: Date = null,
-              public pictures: Picture[] = [], public allergens: Allergen[] = []) {
+  constructor(public name: string, public id: string = uuidv4(), public dateAdded: Date = new Date(),
+              public pictures: Picture[] = []) {
     super(name, id, dateAdded);
   }
 
@@ -65,22 +54,34 @@ export class Product extends BaseModel {
     return this.hasPictures() ? this.lastPicture().toData() : ''
   }
 
-  // TODO: memoize
   isAllergenMatch(word: string): boolean {
     return !!this
       .allergens
       .find(allergen => allergen.matches(word));
   }
 
+  get dateScanned() {
+    // TODO
+    return null;
+  }
+
+  get allergens() {
+    return this.pictures.reduce((allergens, picture) =>
+      [...allergens, ...picture.allergens],
+    []);
+  }
+
   get status() {
-    if (!this.dateScanned) {
-      return Status.NotScanned
+    const statuses: Status[] = this.pictures.map(picture => picture.status);
+
+    if (statuses.indexOf(Status.SomethingFound) >= 0) {
+      return Status.SomethingFound;
     }
 
-    if (this.containsAllergens()) {
-      return Status.SomethingFound
+    if (statuses.indexOf(Status.NothingFound) >= 0) {
+      return Status.NothingFound;
     }
 
-    return Status.NothingFound
+    return Status.NotScanned;
   }
 }
