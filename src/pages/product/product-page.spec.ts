@@ -154,7 +154,9 @@ describe('ProductPage', () => {
     fixture.detectChanges();
     tick();
     fixture.detectChanges();
-    expect(ProductProviderMock.product.numAllergens()).toBe(3);
+
+    product = ProductProviderMock.product;
+    expect(product.numAllergens()).toBe(3);
   }));
 
   it('should whether or not an image is being scanned', fakeAsync(() => {
@@ -169,5 +171,15 @@ describe('ProductPage', () => {
     fixture.detectChanges();
 
     expect(component.isScanning(picture)).toBeFalsy();;
+  }));
+
+  it('should be able to remove picture', fakeAsync(() => {
+    component.removePicture(picture);
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+
+    product = ProductProviderMock.product;
+    expect(product.numPictures()).toBe(0);
   }));
 });
