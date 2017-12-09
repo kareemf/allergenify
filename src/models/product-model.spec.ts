@@ -62,13 +62,6 @@ describe('Product', () => {
       });
     }
 
-    function makeProduct(pictures) {
-      product = Product.from({
-        name: 'foo',
-        pictures
-      });
-    }
-
     function whenStatusIsChecked() {
       status = product.status;
     }
@@ -114,9 +107,13 @@ describe('Product', () => {
       allergens: [Allergen.from({ name: 'bar' })]
     });
 
+    makeProduct([picture]);
+  }
+
+  function makeProduct(pictures) {
     product = Product.from({
       name: 'foo',
-      pictures: [picture]
+      pictures
     });
   }
 });
