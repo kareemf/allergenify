@@ -1,6 +1,6 @@
 import { AllergensProvider } from './allergens-provider';
 import { Allergen } from '../../models/allergen-model';
-import { StorageMock } from '../../../test-config/stoage-mock';
+import { StorageMock } from '../../../test-config/storage-mock';
 
 describe('AllergensProvider', () => {
   let provider: AllergensProvider;

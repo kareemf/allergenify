@@ -10,7 +10,7 @@ import { NavParams } from 'ionic-angular';
 import { NavParamsMock } from '../../../test-config/nav-params-mock';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Storage } from '@ionic/storage';
-import { StorageMock } from '../../../test-config/stoage-mock';
+import { StorageMock } from '../../../test-config/storage-mock';
 
 import { Product } from '../../models/product-model';
 import { Picture } from '../../models/picture-model';
