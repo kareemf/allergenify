@@ -1,7 +1,6 @@
 import uuidv4 from 'uuid/v4';
 import { BaseModel } from "./base-model";
 import { Picture, Status } from "./picture-model";
-import { Allergen } from "./allergen-model";
 
 export class Product extends BaseModel {
 
@@ -61,8 +60,12 @@ export class Product extends BaseModel {
   }
 
   get dateScanned() {
-    // TODO
-    return null;
+    return this
+      .allergens
+      .map(allergen => allergen.dateScanned)
+      .sort()
+      .reverse()
+      [0] || null;
   }
 
   get allergens() {

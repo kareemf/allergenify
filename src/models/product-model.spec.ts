@@ -41,10 +41,6 @@ describe('Product', () => {
       thenStatusShouldBe(Status.SomethingFound);
     });
 
-    function givenAProductWithoutPictures() {
-      makeProduct([]);
-    }
-
     function givenAProductWithUnscannedPicture() {
       makeProduct([makePicture(Status.NotScanned)]);
     }
@@ -71,10 +67,26 @@ describe('Product', () => {
     }
   });
 
-  xdescribe('Date Scanned (Transient)', () => {
-    xit('should have the newest dateScaned of its pictures', () => {
-      // TODO
+  describe('Date Scanned (Transient)', () => {
+    let dateScanned: Date;
+
+    beforeEach(() => {
+      dateScanned = null;
     });
+
+    it('should have no dateScanned if it has no pics', () => {
+      givenAProductWithoutPictures();
+      whenDateScannedIsChecked();
+      thenDateScannedIs(null);
+    });
+
+    function whenDateScannedIsChecked() {
+      dateScanned = product.dateScanned;
+    }
+
+    function thenDateScannedIs(expectedDate: Date) {
+      expect(expectedDate).toBe(dateScanned);
+    }
   });
 
   describe('Matching', () => {
@@ -100,6 +112,10 @@ describe('Product', () => {
       expect(isAllergenMatch).toBeTruthy();
     }
   });
+
+  function givenAProductWithoutPictures() {
+    makeProduct([]);
+  }
 
   function givenScannedProductWithAllergens(): void {
     const picture  = Picture.from({
