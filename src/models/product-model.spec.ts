@@ -5,9 +5,33 @@ import { Stats } from 'fs';
 
 describe('Product', () => {
   let product: Product;
+  let picture: Picture;
 
   beforeEach(() => {
     product = null;
+    picture = null;
+  });
+
+  describe('Pictures', () => {
+    it('should allow pictures to be added', () => {
+      givenAProductWithoutPictures();
+      whenAPictureIsAdded();
+      theProductShouldHaveAPicture();
+      andProductThumbnailShouldBeLastPicture();
+    });
+
+    function whenAPictureIsAdded() {
+      picture = makePicture(Status.SomethingFound);
+      product.addPicture(picture);
+    }
+
+    function theProductShouldHaveAPicture() {
+      expect(product.hasPictures()).toBeTruthy();
+    }
+
+    function andProductThumbnailShouldBeLastPicture() {
+      expect(product.thumbnail()).toBe(picture.toData());
+    }
   });
 
   describe('Status (Transient)', () => {
