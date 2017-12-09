@@ -131,6 +131,34 @@ describe('Product', () => {
     }
   });
 
+  describe('Allergens', () => {
+    let containsAllergens: boolean;
+
+    beforeEach(() => {
+      containsAllergens = null;
+    });
+
+    it('should say it contains allergens if it has a picture with allergens', () => {
+      givenScannedProductWithAllergens();
+      whenContainsAllergensIsChecked();
+      thenAnswerIs(true);
+    });
+
+    it('should not say it contains allergens if it has a picture without allergens', () => {
+      givenAProductWithUnscannedPicture();
+      whenContainsAllergensIsChecked();
+      thenAnswerIs(false);
+    });
+
+    function whenContainsAllergensIsChecked() {
+      containsAllergens = product.containsAllergens();
+    }
+
+    function thenAnswerIs(result: boolean) {
+      expect(containsAllergens).toBe(result);
+    }
+  });
+
   describe('Matching', () => {
     let isAllergenMatch: boolean;
 
