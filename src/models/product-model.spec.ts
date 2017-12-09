@@ -41,21 +41,10 @@ describe('Product', () => {
       thenStatusShouldBe(Status.SomethingFound);
     });
 
-    function givenAProductWithUnscannedPicture() {
-      makeProduct([makePicture(Status.NotScanned)]);
-    }
-
     function givenAProductWithPicturesOfStatus(...args) {
       const pictures = args.map(stat => makePicture(stat));
 
       makeProduct(pictures);
-    }
-
-    function makePicture(_status: Status) {
-      return Picture.from({
-        name: _status,
-        status: _status
-      });
     }
 
     function whenStatusIsChecked() {
@@ -79,6 +68,35 @@ describe('Product', () => {
       whenDateScannedIsChecked();
       thenDateScannedIs(null);
     });
+
+    it('should have no dateScanned if its only pic is unscanned', () => {
+      givenAProductWithUnscannedPicture();
+      whenDateScannedIsChecked();
+      thenDateScannedIs(null);
+    });
+
+    it('should have dateScanned of its only scanned pic', () => {
+      const date1 = new Date();
+
+      givenAProductWithPicturesScannedOn(date1);
+      whenDateScannedIsChecked();
+      thenDateScannedIs(date1);
+    });
+
+    it('should have highest dateScanned of pics', () => {
+      const date1 = new Date();
+      const date2 = new Date();
+
+      givenAProductWithPicturesScannedOn(date1, date2);
+      whenDateScannedIsChecked();
+      thenDateScannedIs(date2);
+    });
+
+    function givenAProductWithPicturesScannedOn(...args) {
+      const pictures = args.map(date => makePicture(Status.NothingFound, date));
+
+      makeProduct(pictures);
+    }
 
     function whenDateScannedIsChecked() {
       dateScanned = product.dateScanned;
@@ -126,10 +144,22 @@ describe('Product', () => {
     makeProduct([picture]);
   }
 
+  function givenAProductWithUnscannedPicture() {
+    makeProduct([makePicture(Status.NotScanned)]);
+  }
+
   function makeProduct(pictures) {
     product = Product.from({
       name: 'foo',
       pictures
+    });
+  }
+
+  function makePicture(_status: Status, date?: Date) {
+    return Picture.from({
+      name: _status,
+      status: _status,
+      dateScanned: date ? date : null
     });
   }
 });

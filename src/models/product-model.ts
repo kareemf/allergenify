@@ -60,12 +60,7 @@ export class Product extends BaseModel {
   }
 
   get dateScanned() {
-    return this
-      .allergens
-      .map(allergen => allergen.dateScanned)
-      .sort()
-      .reverse()
-      [0] || null;
+    return this.hasPictures() ? this.lastPicture().dateScanned : null;
   }
 
   get allergens() {
