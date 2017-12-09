@@ -146,14 +146,12 @@ describe('ProductPage', () => {
 
   it('should identify all allergens in text extracted from scanned images', fakeAsync(() => {
     component.ionViewDidLoad();
-    tick();
-    fixture.detectChanges();
+    updateState();
 
     component.scanPicture(picture);
     fixture.detectChanges();
 
-    tick();
-    fixture.detectChanges();
+    updateState();
 
     product = ProductProviderMock.product;
     expect(product.numAllergens()).toBe(3);
@@ -167,8 +165,7 @@ describe('ProductPage', () => {
 
     expect(component.isScanning(picture)).toBeTruthy();
 
-    tick();
-    fixture.detectChanges();
+    updateState();
 
     expect(component.isScanning(picture)).toBeFalsy();;
   }));
@@ -176,10 +173,14 @@ describe('ProductPage', () => {
   it('should be able to remove picture', fakeAsync(() => {
     component.removePicture(picture);
     fixture.detectChanges();
-    tick();
-    fixture.detectChanges();
+    updateState();
 
     product = ProductProviderMock.product;
     expect(product.numPictures()).toBe(0);
   }));
+
+  function updateState() {
+    tick();
+    fixture.detectChanges();
+  }
 });
