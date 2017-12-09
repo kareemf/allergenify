@@ -82,7 +82,7 @@ class ProductProviderMock implements ProductFetcher, ProductSaver {
   public static product: Product = null;
 
   getItem(id: string): Promise<Product> {
-    console.log('MOCK PRODUCT GET');
+    console.log('MOCK PRODUCT GET', ProductProviderMock.product);
 
     return Promise.resolve(ProductProviderMock.product);
   }
@@ -132,7 +132,7 @@ describe('ProductPage', () => {
         { provide: ProductProvider, useClass: ProductProviderMock },
         ProductsProvider,
       ]
-    })
+    });
   }));
 
   beforeEach(() => {
@@ -145,6 +145,10 @@ describe('ProductPage', () => {
   });
 
   it('should identify all allergens in text extracted from scanned images', fakeAsync(() => {
+    component.ionViewDidLoad();
+    tick();
+    fixture.detectChanges();
+
     component.scanPicture(picture);
     fixture.detectChanges();
 

@@ -183,17 +183,17 @@ export class ProductPage {
   private handleTextExtraction(picture: Picture, text: string): Promise<void> {
     console.log("text extraction produced", text);
 
-    this.product.dateScanned = new Date();
+    picture.dateScanned = new Date();
     picture.text = text;
 
     return this
       .allergensProvider
       .checkForAllergens(text)
-      .then((allergens: Allergen[]) => this.handleAllergenCheck(allergens))
+      .then((allergens: Allergen[]) => this.handleAllergenCheck(picture, allergens))
       .catch(error => this.handleAllergenCheckError(error));
   }
 
-  private handleAllergenCheck(allergens: Allergen[]): Promise<void> {
+  private handleAllergenCheck(picture: Picture,allergens: Allergen[]): Promise<void> {
     console.log("allergen check results", JSON.stringify(allergens));
 
     if(!allergens.length) {
@@ -202,7 +202,7 @@ export class ProductPage {
     }
 
     this.presentAllergensDetected(allergens);
-    this.handleAllergensFound(allergens);
+    this.handleAllergensFound(picture, allergens);
 
     return this.save();
   }
@@ -216,8 +216,8 @@ export class ProductPage {
       .present(title, message);
   }
 
-  private handleAllergensFound(allergens: Allergen[]): void {
-    this.product.allergens = allergens;
+  private handleAllergensFound(picture: Picture, allergens: Allergen[]): void {
+    picture.allergens = allergens;
   }
 
   private handleAllergenCheckError(error: any): void {
