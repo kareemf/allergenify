@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
 
 export class ProductsProviderMock implements ProductsFetcher, ProductsSaver {
+  items: Product[];
   observable: Observable<Product[]>;
   subscriber: Subscriber<Product[]>;
 
@@ -12,12 +13,13 @@ export class ProductsProviderMock implements ProductsFetcher, ProductsSaver {
       this.subscriber = subscriber;
     });
   }
+
   getItems(): Promise<Product[]> {
-    return Promise.resolve([]);
+    return Promise.resolve(this.items);
   }
 
   save(items): Promise<any> {
-    return Promise.resolve([]);
+    return Promise.resolve(this.items);
   }
 
   updates(): Observable<Product[]> {

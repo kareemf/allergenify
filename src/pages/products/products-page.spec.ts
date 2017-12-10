@@ -15,7 +15,7 @@ import { PlatformMock } from '../../../test-config/mocks-ionic';
 
 import { NavControllerMock } from '../../../test-config/nav-controller-mock';
 import { GenericAlerterMock } from '../../../test-config/generic-alerter-mock';
-import { ProductsProviderMock } from '../../../test-config/product-provider-mock';
+import { ProductsProviderMock } from '../../../test-config/products-provider-mock';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 

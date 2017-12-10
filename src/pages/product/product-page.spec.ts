@@ -21,7 +21,7 @@ import { AllergensProvider, AllergenFetcher, AllergensChecker } from '../../prov
 import { GenericAlerter, Alerter } from '../../providers/generic-alerter/generic-alerter';
 import { ProductProvider, ProductFetcher, ProductSaver } from '../../providers/product/product';
 import { ProductsProvider } from '../../providers/products/products';
-import { ProductsProviderMock } from '../../../test-config/product-provider-mock';
+import { ProductsProviderMock } from '../../../test-config/products-provider-mock';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ProductPage } from './product';
 import { By } from '@angular/platform-browser';
