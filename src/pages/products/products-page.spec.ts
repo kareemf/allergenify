@@ -16,6 +16,7 @@ import { PlatformMock } from '../../../test-config/mocks-ionic';
 import { NavControllerMock } from '../../../test-config/nav-controller-mock';
 import { GenericAlerterMock } from '../../../test-config/generic-alerter-mock';
 import { ProductsProviderMock } from '../../../test-config/product-provider-mock';
+import { By } from '@angular/platform-browser';
 
 describe('ProductsPage', () => {
   let fixture: ComponentFixture<ProductsPage>;
@@ -41,10 +42,25 @@ describe('ProductsPage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductsPage);
     component = fixture.componentInstance;
-    component.ionViewDidLoad();
   });
 
   it('should be created', () => {
     expect(component instanceof ProductsPage).toBe(true);
   });
+
+  it('should load items when platform is ready', fakeAsync(() => {
+    component.ionViewDidLoad();
+    updateState();
+
+    const debugEl = fixture.debugElement.query(By.css('.list'));
+    const nativeEl = debugEl.nativeElement;
+
+    expect(nativeEl.children.length).toBe(0);
+  }));
+
+  function updateState() {
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+  }
 });
