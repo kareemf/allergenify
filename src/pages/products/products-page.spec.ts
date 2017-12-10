@@ -17,10 +17,13 @@ import { NavControllerMock } from '../../../test-config/nav-controller-mock';
 import { GenericAlerterMock } from '../../../test-config/generic-alerter-mock';
 import { ProductsProviderMock } from '../../../test-config/product-provider-mock';
 import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
 describe('ProductsPage', () => {
   let fixture: ComponentFixture<ProductsPage>;
   let component: ProductsPage;
+  let debugElement: DebugElement;
+  let nativeElement: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -49,14 +52,24 @@ describe('ProductsPage', () => {
   });
 
   it('should load items when platform is ready', fakeAsync(() => {
+    givenALoadedView();
+    whenListElementIsGrabbed();
+    thenCountIs(0);
+  }));
+
+  function givenALoadedView() {
     component.ionViewDidLoad();
     updateState();
+  }
 
-    const debugEl = fixture.debugElement.query(By.css('.list'));
-    const nativeEl = debugEl.nativeElement;
+  function whenListElementIsGrabbed() {
+    debugElement = fixture.debugElement.query(By.css('.list'));
+    nativeElement = debugElement.nativeElement;
+  }
 
-    expect(nativeEl.children.length).toBe(0);
-  }));
+  function thenCountIs(expectedCount: number) {
+    expect(nativeElement.children.length).toBe(expectedCount);
+  }
 
   function updateState() {
     fixture.detectChanges();
