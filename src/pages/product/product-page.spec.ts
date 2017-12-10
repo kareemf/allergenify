@@ -24,6 +24,7 @@ import { ProductsProvider } from '../../providers/products/products';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ProductPage } from './product';
 import { By } from '@angular/platform-browser';
+import { GenericAlerterMock } from '../../../test-config/generic-alerter-mock';
 
 class OcrProviderMock implements TextExtracter {
   extractText(picture: Picture): Promise<string> {
@@ -59,22 +60,6 @@ class AllergensProviderMock implements AllergenFetcher, AllergensChecker {
   checkForAllergens(text: string): Promise<Allergen[]> {
     // TODO: determine what, if anything, should match
     return Promise.resolve(AllergensProviderMock.allergens);
-  }
-}
-
-class GenericAlerterMock implements Alerter {
-  public static title: String = null;
-  public static message: String = null;
-
-  present(title: string, message: string, buttons) {
-    console.log('PRESENT', title, message);
-
-    GenericAlerterMock.title = title;
-    GenericAlerterMock.message = message;
-  }
-
-  presentError(message: string) {
-    console.log('PRESENT ERROR', message);
   }
 }
 
