@@ -10,7 +10,7 @@ import { NavParams } from 'ionic-angular';
 import { NavParamsMock } from '../../../test-config/nav-params-mock';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Storage } from '@ionic/storage';
-import { StorageMock } from '../../../test-config/stoage-mock';
+import { StorageMock } from '../../../test-config/storage-mock';
 
 import { Product } from '../../models/product-model';
 import { Picture } from '../../models/picture-model';
@@ -21,9 +21,11 @@ import { AllergensProvider, AllergenFetcher, AllergensChecker } from '../../prov
 import { GenericAlerter, Alerter } from '../../providers/generic-alerter/generic-alerter';
 import { ProductProvider, ProductFetcher, ProductSaver } from '../../providers/product/product';
 import { ProductsProvider } from '../../providers/products/products';
+import { ProductsProviderMock } from '../../../test-config/products-provider-mock';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ProductPage } from './product';
 import { By } from '@angular/platform-browser';
+import { GenericAlerterMock } from '../../../test-config/generic-alerter-mock';
 
 class OcrProviderMock implements TextExtracter {
   extractText(picture: Picture): Promise<string> {
@@ -59,22 +61,6 @@ class AllergensProviderMock implements AllergenFetcher, AllergensChecker {
   checkForAllergens(text: string): Promise<Allergen[]> {
     // TODO: determine what, if anything, should match
     return Promise.resolve(AllergensProviderMock.allergens);
-  }
-}
-
-class GenericAlerterMock implements Alerter {
-  public static title: String = null;
-  public static message: String = null;
-
-  present(title: string, message: string, buttons) {
-    console.log('PRESENT', title, message);
-
-    GenericAlerterMock.title = title;
-    GenericAlerterMock.message = message;
-  }
-
-  presentError(message: string) {
-    console.log('PRESENT ERROR', message);
   }
 }
 
@@ -130,7 +116,7 @@ describe('ProductPage', () => {
         { provide: AllergensProvider, useClass: AllergensProviderMock },
         { provide: GenericAlerter, useClass: GenericAlerterMock },
         { provide: ProductProvider, useClass: ProductProviderMock },
-        ProductsProvider,
+        { provide: ProductsProvider, useClass: ProductsProviderMock },
       ]
     });
   }));
@@ -146,14 +132,12 @@ describe('ProductPage', () => {
 
   it('should identify all allergens in text extracted from scanned images', fakeAsync(() => {
     component.ionViewDidLoad();
-    tick();
-    fixture.detectChanges();
+    updateState();
 
     component.scanPicture(picture);
     fixture.detectChanges();
 
-    tick();
-    fixture.detectChanges();
+    updateState();
 
     product = ProductProviderMock.product;
     expect(product.numAllergens()).toBe(3);
@@ -167,8 +151,7 @@ describe('ProductPage', () => {
 
     expect(component.isScanning(picture)).toBeTruthy();
 
-    tick();
-    fixture.detectChanges();
+    updateState();
 
     expect(component.isScanning(picture)).toBeFalsy();;
   }));
@@ -176,10 +159,14 @@ describe('ProductPage', () => {
   it('should be able to remove picture', fakeAsync(() => {
     component.removePicture(picture);
     fixture.detectChanges();
-    tick();
-    fixture.detectChanges();
+    updateState();
 
     product = ProductProviderMock.product;
     expect(product.numPictures()).toBe(0);
   }));
+
+  function updateState() {
+    tick();
+    fixture.detectChanges();
+  }
 });
