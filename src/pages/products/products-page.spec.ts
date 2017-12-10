@@ -52,14 +52,45 @@ describe('ProductsPage', () => {
   });
 
   it('should load items when platform is ready', fakeAsync(() => {
-    givenALoadedView();
+    givenStoredProductsNumbering(3);
+    andALoadedView();
     whenListElementIsGrabbed();
-    thenCountIs(0);
+    thenCountIs(3);
   }));
 
-  function givenALoadedView() {
+  function givenStoredProductsNumbering(count: number) {
+    const products = makeNumberOfProducts(count);
+    const productsProvider = getProductsProviderInstance();
+
+    // @ts-ignore: Property 'items' is missing in type 'ProductsProvider'.
+    const productsProviderMock = productsProvider as ProductsProviderMock;
+
+    productsProviderMock.setItems(products);
+  }
+
+  function makeNumberOfProducts(count: number) {
+    const products = [];
+
+    for (let i = 0; i < count; i++) {
+      products.push(Product.from({ name: i }));
+    }
+
+    return products;
+  }
+
+  function getProductsProviderInstance() {
+    return fixture.debugElement.injector.get(ProductsProvider);
+  }
+
+  function andALoadedView() {
     component.ionViewDidLoad();
     updateState();
+  }
+
+  function updateState() {
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
   }
 
   function whenListElementIsGrabbed() {
@@ -69,11 +100,5 @@ describe('ProductsPage', () => {
 
   function thenCountIs(expectedCount: number) {
     expect(nativeElement.children.length).toBe(expectedCount);
-  }
-
-  function updateState() {
-    fixture.detectChanges();
-    tick();
-    fixture.detectChanges();
   }
 });
