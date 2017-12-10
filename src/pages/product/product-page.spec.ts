@@ -17,7 +17,8 @@ import { Picture } from '../../models/picture-model';
 import { Allergen } from '../../models/allergen-model';
 
 import { OcrProvider, TextExtracter } from '../../providers/ocr/ocr';
-import { AllergensProvider, AllergenFetcher, AllergensChecker } from '../../providers/allergens/allergens-provider';
+import { AllergensProvider, AllergensFetcher, AllergensChecker } from '../../providers/allergens/allergens-provider';
+import { AllergensProviderMock } from '../../../test-config/allergens-provider-mock';
 import { GenericAlerter, Alerter } from '../../providers/generic-alerter/generic-alerter';
 import { ProductProvider, ProductFetcher, ProductSaver } from '../../providers/product/product';
 import { ProductsProvider } from '../../providers/products/products';
@@ -43,24 +44,6 @@ class OcrProviderMock implements TextExtracter {
     (PARFUM), CARBOMER, HYDROXYETHYLCELLULOSE, EDIA, BHT, STEARAMIDE AMP, TOCOPHERYL ACETATE, PERSEA GRATISSI.
     (AVOCADO) OIL. ZMES BY Unilever 08031|| QINII Furn
     Sunflower`);
-  }
-}
-
-class AllergensProviderMock implements AllergenFetcher, AllergensChecker {
-  static allergens: Allergen[] = [
-    // strings from extracted text
-    Allergen.from({ name: 'Sunflower' }),
-    Allergen.from({ name: 'Fragrance' }),
-    Allergen.from({ name: 'Parfum' }),
-  ];
-
-  getItems(): Promise<Allergen[]> {
-    return Promise.resolve(AllergensProviderMock.allergens);
-  }
-
-  checkForAllergens(text: string): Promise<Allergen[]> {
-    // TODO: determine what, if anything, should match
-    return Promise.resolve(AllergensProviderMock.allergens);
   }
 }
 
@@ -124,7 +107,27 @@ describe('ProductPage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductPage);
     component = fixture.componentInstance;
+
+    setupAllergens();
   });
+
+  function setupAllergens() {
+    const allergens = makeAllergens(['Sunflower', 'Fragrance', 'Parfum']);
+    const allergensProvider = getAllergensProviderInstance();
+
+    // @ts-ignore: Property 'items' is missing in type 'AllergensProvider'.
+    const allergensProviderMock = allergensProvider as AllergensProviderMock;
+
+    allergensProviderMock.setItems(allergens);
+  }
+
+  function makeAllergens(names: string[]) {
+    return names.map(name => Allergen.from({ name }));
+  }
+
+  function getAllergensProviderInstance() {
+    return fixture.debugElement.injector.get(AllergensProvider);
+  }
 
   it('should be created', () => {
     expect(component instanceof ProductPage).toBe(true);

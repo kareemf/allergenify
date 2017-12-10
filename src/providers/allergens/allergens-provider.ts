@@ -3,8 +3,12 @@ import { Storage } from '@ionic/storage';
 import { Allergen } from '../../models/allergen-model';
 import { StorageDataProvider } from '../storage-data';
 
-export interface AllergenFetcher {
+export interface AllergensFetcher {
   getItems(): Promise<Allergen[]>;
+}
+
+export interface AllergensSaver {
+  save(items): Promise<any>;
 }
 
 export interface AllergensChecker {
@@ -12,7 +16,7 @@ export interface AllergensChecker {
 }
 
 @Injectable()
-export class AllergensProvider extends StorageDataProvider implements AllergenFetcher, AllergensChecker {
+export class AllergensProvider extends StorageDataProvider implements AllergensFetcher, AllergensSaver, AllergensChecker {
 
   constructor(storage: Storage) {
     super(storage, 'allergens');
