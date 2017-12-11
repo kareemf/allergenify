@@ -14,4 +14,8 @@ export class GenericAlerterMock implements Alerter {
   presentError(message: string) {
     console.log('PRESENT ERROR', message);
   }
+
+  presentCreate(title: string, onConfirm: (any) => void): void {
+    onConfirm('foo');
+  }
 }

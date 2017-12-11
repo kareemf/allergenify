@@ -1,6 +1,6 @@
 import { async, TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 
-import { IonicModule, Platform } from 'ionic-angular';
+import { IonicModule, Platform, AlertController } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 import { StorageMock } from '../../../test-config/storage-mock';
@@ -15,6 +15,7 @@ import { PlatformMock } from '../../../test-config/mocks-ionic';
 
 import { GenericAlerterMock } from '../../../test-config/generic-alerter-mock';
 import { AllergensProviderMock } from '../../../test-config/allergens-provider-mock';
+import { AlertControllerMock, AlertMock } from 'ionic-mocks';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
@@ -23,6 +24,7 @@ describe('AllergensPage', () => {
   let component: AllergensPage;
   let debugElement: DebugElement;
   let nativeElement: HTMLElement;
+  let alertMock = AlertMock.instance();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -33,6 +35,7 @@ describe('AllergensPage', () => {
       ],
       providers: [
         { provide: Storage, useClass: StorageMock },
+        { provide: AlertController, useClass: AlertControllerMock.instance(alertMock) },
         { provide: Platform, useClass: PlatformMock },
         { provide: AllergensProvider, useClass: AllergensProviderMock },
         { provide: GenericAlerter, useClass: GenericAlerterMock },
@@ -98,5 +101,22 @@ describe('AllergensPage', () => {
 
   function thenCountIs(expectedCount: number) {
     expect(nativeElement.children.length).toBe(expectedCount);
+  }
+
+  it('should allow items to be added, update list after', fakeAsync(()=>{
+    givenStoredAllergensNumbering(3);
+    andALoadedView();
+    whenAnAllergenIsAdded();
+    andListElementIsGrabbed();
+    thenCountIs(4);
+  }));
+
+  function whenAnAllergenIsAdded() {
+    component.add();
+    updateState();
+  }
+
+  function andListElementIsGrabbed() {
+    whenListElementIsGrabbed();
   }
 });
