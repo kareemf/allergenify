@@ -80,7 +80,8 @@ describe('AllergensPage', () => {
   }
 
   function getAllergensProviderInstance() {
-    return fixture.debugElement.injector.get(AllergensProvider);
+    // @ts-ignore: Property 'items' is missing in type 'AllergensProvider'.
+    return fixture.debugElement.injector.get(AllergensProvider) as AllergensProviderMock;
   }
 
   function andALoadedView() {
@@ -118,5 +119,30 @@ describe('AllergensPage', () => {
 
   function andListElementIsGrabbed() {
     whenListElementIsGrabbed();
+  }
+
+  it('should allow items to be edited, update list after', fakeAsync(() => {
+    givenStoredAllergensNumbering(3);
+    andALoadedView();
+    whenFirstAllergenIsEdited();
+    andListElementIsGrabbed();
+    thenCountIs(3);
+    andNameOfFirstItemIsUpdated();
+  }));
+
+  function whenFirstAllergenIsEdited() {
+    const items = getItemsFromMockProvider();
+    component.edit(items[0]);
+  }
+
+  function getItemsFromMockProvider() {
+    const allergensProvider = getAllergensProviderInstance();
+    const items = allergensProvider.getItemsForTesting();
+    return items;
+  }
+
+  function andNameOfFirstItemIsUpdated() {
+    const items = getItemsFromMockProvider();
+    expect(items[0].name).toBe('edited');
   }
 });

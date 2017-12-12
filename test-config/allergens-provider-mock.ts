@@ -14,6 +14,10 @@ export class AllergensProviderMock implements AllergensFetcher, AllergensSaver {
     return Promise.resolve(this.items);
   }
 
+  getItemsForTesting(): Allergen[] {
+    return this.items;
+  }
+
   save(items): Promise<any> {
     this.items = items;
     return Promise.resolve(this.items);

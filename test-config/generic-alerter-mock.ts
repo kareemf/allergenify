@@ -1,4 +1,5 @@
 import { Alerter } from "../src/providers/generic-alerter/generic-alerter";
+import { BaseModel } from "../src/models/base-model";
 
 export class GenericAlerterMock implements Alerter {
   public static title: String = null;
@@ -17,5 +18,10 @@ export class GenericAlerterMock implements Alerter {
 
   presentCreate(title: string, onConfirm: (any) => void): void {
     onConfirm('foo');
+  }
+
+  presentRename<T extends BaseModel>(entity: T, onRename: (entity: T, newName: string) => void): void {
+    entity.name = "edited";
+    onRename(entity, entity.name);
   }
 }
