@@ -145,4 +145,18 @@ describe('AllergensPage', () => {
     const items = getItemsFromMockProvider();
     expect(items[0].name).toBe('edited');
   }
+
+  it('should allow items to be removed, update list after', fakeAsync(() => {
+    givenStoredAllergensNumbering(3);
+    andALoadedView();
+    whenFirstAllergenIsRemoved();
+    andListElementIsGrabbed();
+    thenCountIs(2);
+  }));
+
+  function whenFirstAllergenIsRemoved() {
+    const items = getItemsFromMockProvider();
+    component.remove(items[0]);
+    updateState();
+  }
 });

@@ -23,6 +23,20 @@ export class AllergensProviderMock implements AllergensFetcher, AllergensSaver {
     return Promise.resolve(this.items);
   }
 
+  remove(item: Allergen, items: Allergen[]): Promise<Allergen[]> {
+    const index = items.indexOf(item);
+
+    const newItems = this.removeFrom(items, index);
+    return this.save(newItems);
+  }
+
+  protected removeFrom<T>(items: T[], index: number): T[] {
+    return [
+      ...items.slice(0, index),
+      ...items.slice(index + 1)
+    ];
+  }
+
   checkForAllergens(text: string): Promise<Allergen[]> {
     return Promise.resolve(this.items);
   }
