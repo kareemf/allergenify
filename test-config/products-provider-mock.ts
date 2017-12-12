@@ -22,6 +22,10 @@ export class ProductsProviderMock implements ProductsFetcher, ProductsSaver {
     return Promise.resolve(this.items);
   }
 
+  getItemsForTesting(): Product[] {
+    return this.items;
+  }
+
   save(items): Promise<any> {
     return Promise.resolve(this.items);
   }
