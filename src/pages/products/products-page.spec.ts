@@ -58,6 +58,14 @@ describe('ProductsPage', () => {
     thenCountIs(3);
   }));
 
+  it('should allow items to be added, update list after', fakeAsync(() => {
+    givenStoredProductsNumbering(3);
+    andALoadedView();
+    whenAProductIsAdded();
+    andListElementIsGrabbed();
+    thenCountIs(4);
+  }));
+
   function givenStoredProductsNumbering(count: number) {
     const products = makeNumberOfProducts(count);
     const productsProvider = getProductsProviderInstance();
@@ -98,7 +106,16 @@ describe('ProductsPage', () => {
     nativeElement = debugElement.nativeElement;
   }
 
+  function andListElementIsGrabbed() {
+    whenListElementIsGrabbed();
+  }
+
   function thenCountIs(expectedCount: number) {
     expect(nativeElement.children.length).toBe(expectedCount);
+  }
+
+  function whenAProductIsAdded() {
+    component.add();
+    updateState();
   }
 });
