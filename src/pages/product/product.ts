@@ -11,7 +11,7 @@ import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter'
 import { ProductProvider } from '../../providers/product/product';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
-enum CameraReadyStatus {
+export enum CameraReadyStatus {
   ViewDataNotLoaded = "Can't take photo - data not loaded",
   NotOnDevice = "Can't take photo - not on device",
   Ready = "Ready"
@@ -112,7 +112,7 @@ export class ProductPage {
       .camera
       .getPicture(this.cameraOptions)
       .then(imagePath => this.handleImageCapture(this.product, imagePath))
-      .catch(error => this.handleImageCaptureError(error))
+      .catch(error => this.handleImageCaptureError(error));
   }
 
   private cantTakePhoto(): boolean {

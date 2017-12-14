@@ -5,6 +5,7 @@ import { VISION_API_KEY  } from './access-config';
 
 export interface TextExtracter {
   extractText(picture: Picture): Promise<string>;
+  extractLbel(picture: Picture): Promise<string>;
 }
 
 @Injectable()
@@ -54,6 +55,10 @@ export class OcrProvider implements TextExtracter {
     const { responses: [ firstResponse ] } = response;
 
     return firstResponse.fullTextAnnotation.text;
+  }
+
+  extractLbel(picture: Picture): Promise<string> {
+    return Promise.resolve('TODO');
   }
 }
 
