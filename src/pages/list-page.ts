@@ -14,7 +14,7 @@ export abstract class ListPage<T extends BaseModel> {
   }
 
   ionViewDidLoad() {
-    console.log(`ionViewDidLoad ${this.entityType}Page`);
+    console.log(`ionViewDidLoad ${this.entityType}sPage`);
     this.setupPlatformReady();
   }
 
