@@ -15,50 +15,70 @@ export class OcrProvider implements TextExtracter {
   constructor(private httpClient: HttpClient) {
     this.getDocumentTextRequestBody = this.getDocumentTextRequestBody.bind(this);
     this.makeVisionRequest = this.makeVisionRequest.bind(this);
-    this.handleVisionResponse = this.handleVisionResponse.bind(this);
+    this.handleTextResponse = this.handleTextResponse.bind(this);
+    this.handleLogoResponse = this.handleLogoResponse.bind(this);
   }
 
   extractText(picture: Picture): Promise<string> {
-     const req = this.getDocumentTextRequestBody(picture.name);
-     return this.makeVisionRequest(req);
+     const req = this.getDocumentTextRequestBody(picture.name, [VisionFeatureType.DOCUMENT_TEXT_DETECTION]);
+    return this.makeVisionRequest(req).then(this.handleTextResponse);
+;
   }
 
-  private getDocumentTextRequestBody(base64: string): VisionRequestBody {
+  extractLbel(picture: Picture): Promise<string> {
+    const req = this.getDocumentTextRequestBody(picture.name, [VisionFeatureType.LOGO_DETECTION]);
+    return this.makeVisionRequest(req).then(this.handleLogoResponse);
+  }
+
+  private getDocumentTextRequestBody(base64: string, featureTypes: VisionFeatureType[]): VisionRequestBody {
     return {
       requests: [{
         image: {
           content: base64
         },
-        features: [{
-          type: VisionFeatureType.DOCUMENT_TEXT_DETECTION,
+        features: featureTypes.map(type => ({
+          type,
           maxResults: 1
-        }]
+        }))
       }]
     }
   }
 
-  private makeVisionRequest(requestBody): Promise<string> {
+  private makeVisionRequest(requestBody): Promise<VisionResponse> {
     const url = this.visionApiUrl();
 
     return this
       .httpClient
       .post(url, requestBody)
-      .toPromise()
-      .then(this.handleVisionResponse);
+      .toPromise() as Promise<VisionResponse>;
   }
 
   private visionApiUrl(): string {
     return `${OcrProvider.BASE_VISION_API_URL}${VISION_API_KEY}`;
   }
 
-  private handleVisionResponse(response: VisionResponse): string {
-    const { responses: [ firstResponse ] } = response;
+  private handleTextResponse(visionResponse: VisionResponse): string {
+    const { responses: [firstResponse] } = visionResponse;
 
     return firstResponse.fullTextAnnotation.text;
   }
 
-  extractLbel(picture: Picture): Promise<string> {
-    return Promise.resolve('TODO');
+  private handleLogoResponse(visionResponse: VisionResponse): string {
+    console.log("logo response", JSON.stringify(visionResponse));
+
+    const { responses: [firstResponse] } = visionResponse;
+
+    if (this.doesNotHaveLogoAnnotations(firstResponse)) {
+      return (new Date()).toString();
+    }
+
+    const { logoAnnotations } = firstResponse;
+
+    return logoAnnotations[0].description;
+  }
+
+  private doesNotHaveLogoAnnotations(response: AnnotateImageResponse) {
+    return !response || !response.logoAnnotations || !response.logoAnnotations.length;
   }
 }
 
@@ -86,7 +106,8 @@ interface VisionFeature {
 
 // https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#Type
 enum VisionFeatureType {
-  DOCUMENT_TEXT_DETECTION = "DOCUMENT_TEXT_DETECTION"
+  DOCUMENT_TEXT_DETECTION = "DOCUMENT_TEXT_DETECTION",
+  LOGO_DETECTION = "LOGO_DETECTION"
 }
 
 interface VisionResponse {
@@ -95,10 +116,16 @@ interface VisionResponse {
 
 // https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#AnnotateImageResponse
 interface AnnotateImageResponse {
-  fullTextAnnotation: TextAnnotation
+  fullTextAnnotation: TextAnnotation,
+  logoAnnotations: EntityAnnotation[]
 }
 
 // https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#TextAnnotation
 interface TextAnnotation {
   text: string
+}
+
+// https://cloud.google.com/vision/docs/detecting-logos
+interface EntityAnnotation {
+  description: string
 }
