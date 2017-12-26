@@ -132,7 +132,7 @@ describe('ProductsPage', () => {
   }));
 
   function whenFirstProductIsViewed() {
-    component.view(getTestItems[0]);
+    component.view(getTestItems()[0]);
     updateState()
   }
 
@@ -146,7 +146,7 @@ describe('ProductsPage', () => {
     const lastNavAction: NavMockAction = navConttroller.peekForTest();
 
     expect(lastNavAction.page).toBe('ProductPage');
-    expect(lastNavAction.params.id).toBe(getTestItems[0].id);
+    expect(lastNavAction.params.id).toBe(getTestItems()[0].id);
   }
 
   function getNavControllerInstance() {
