@@ -9,7 +9,7 @@ import { CameraMock } from '@ionic-native-mocks/camera';
 import { OcrProvider } from '../../providers/ocr/ocr';
 import { OcrProviderMock } from '../../../test-config/ocr-provider-mock';
 
-import { ProductsPage } from './products';
+import { ProductsPage } from './products-page';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ProductsProvider } from '../../providers/products/products';
 import { Observable } from 'rxjs/Observable';
