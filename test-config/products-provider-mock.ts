@@ -1,5 +1,5 @@
 import { Product } from '../src/models/product-model';
-import { ProductsSaver, ProductsFetcher } from '../src/providers/products/products';
+import { ProductsSaver, ProductsFetcher } from '../src/providers/products/products-provider';
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
 

@@ -2,6 +2,8 @@ import { TextExtracter } from "../src/providers/ocr/ocr";
 import { Picture } from "../src/models/picture-model";
 
 export class OcrProviderMock implements TextExtracter {
+  static EXTRACTED_LABEL: string = 'Test Label';
+
   extractText(picture: Picture): Promise<string> {
     return Promise.resolve(`Daily Hydrating Vitamin E & Avocado Protects and defends skin from
     dryness for healthy looking skin. This creamy, non-greasy formula containing Vitamin E and Avocado provides
@@ -17,5 +19,9 @@ export class OcrProviderMock implements TextExtracter {
     (PARFUM), CARBOMER, HYDROXYETHYLCELLULOSE, EDIA, BHT, STEARAMIDE AMP, TOCOPHERYL ACETATE, PERSEA GRATISSI.
     (AVOCADO) OIL. ZMES BY Unilever 08031|| QINII Furn
     Sunflower`);
+  }
+
+  extractLbel(picture: Picture): Promise<string> {
+    return Promise.resolve(OcrProviderMock.EXTRACTED_LABEL);
   }
 }

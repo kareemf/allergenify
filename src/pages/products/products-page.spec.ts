@@ -4,10 +4,14 @@ import { IonicModule, NavController, Platform } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 import { StorageMock } from '../../../test-config/storage-mock';
+import { Camera } from '@ionic-native/camera';
+import { CameraMock } from '@ionic-native-mocks/camera';
+import { OcrProvider } from '../../providers/ocr/ocr';
+import { OcrProviderMock } from '../../../test-config/ocr-provider-mock';
 
-import { ProductsPage } from './products';
+import { ProductsPage } from './products-page';
 import { PipesModule } from '../../pipes/pipes.module';
-import { ProductsProvider } from '../../providers/products/products';
+import { ProductsProvider } from '../../providers/products/products-provider';
 import { Observable } from 'rxjs/Observable';
 import { Product } from '../../models/product-model';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
@@ -18,6 +22,7 @@ import { GenericAlerterMock } from '../../../test-config/generic-alerter-mock';
 import { ProductsProviderMock } from '../../../test-config/products-provider-mock';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+
 
 describe('ProductsPage', () => {
   let fixture: ComponentFixture<ProductsPage>;
@@ -38,6 +43,8 @@ describe('ProductsPage', () => {
         { provide: Platform, useClass: PlatformMock },
         { provide: GenericAlerter, useClass: GenericAlerterMock },
         { provide: NavController, useClass: NavControllerMock },
+        { provide: Camera, useClass: CameraMock },
+        { provide: OcrProvider, useClass: OcrProviderMock },
       ]
     });
   }));
@@ -125,25 +132,51 @@ describe('ProductsPage', () => {
   }));
 
   function whenFirstProductIsViewed() {
-    const productsProvider = getProductsProviderInstance();
-    const items = productsProvider.getItemsForTesting();
-
-    component.view(items[0]);
+    component.view(getTestItems()[0]);
     updateState()
   }
 
-  function thenNavigationPointsToFirstProduct() {
+  function getTestItems(): Product[] {
     const productsProvider = getProductsProviderInstance();
-    const items = productsProvider.getItemsForTesting();
+    return productsProvider.getItemsForTesting();
+  }
 
+  function thenNavigationPointsToFirstProduct() {
     const navConttroller = getNavControllerInstance();
     const lastNavAction: NavMockAction = navConttroller.peekForTest();
 
     expect(lastNavAction.page).toBe('ProductPage');
-    expect(lastNavAction.params.id).toBe(items[0].id);
+    expect(lastNavAction.params.id).toBe(getTestItems()[0].id);
   }
 
   function getNavControllerInstance() {
     return fixture.debugElement.injector.get(NavController) as NavControllerMock;
+  }
+
+  it('should allow items to be added from the camera', fakeAsync(() => {
+    givenStoredProductsNumbering(1);
+    andALoadedView();
+    whenProductIsAddedViaCamera();
+    andListElementIsGrabbed();
+    thenCountIs(2);
+    andLastProductHasNameExtractedFromImage();
+    andLastProductHasAPicture();
+  }));
+
+  function whenProductIsAddedViaCamera() {
+    component.addFromPicture();
+    updateState();
+  }
+
+  function andLastProductHasNameExtractedFromImage() {
+    const product = getTestItems()[1];
+
+    expect(product.name).toBe(OcrProviderMock.EXTRACTED_LABEL);
+  }
+
+  function andLastProductHasAPicture() {
+    const product = getTestItems()[1];
+
+    expect(product.hasPictures).toBeTruthy();
   }
 });

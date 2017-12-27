@@ -13,10 +13,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 
 import { AllergensProvider } from '../providers/allergens/allergens-provider';
-import { ProductsProvider } from '../providers/products/products';
+import { ProductsProvider } from '../providers/products/products-provider';
 import { OcrProvider } from '../providers/ocr/ocr';
 import { GenericAlerter } from '../providers/generic-alerter/generic-alerter';
-import { ProductProvider } from '../providers/product/product';
+import { ProductProvider } from '../providers/product/product-provider';
 
 @NgModule({
   declarations: [

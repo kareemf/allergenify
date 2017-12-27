@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ProductsProvider } from '../products/products';
+import { ProductsProvider } from '../products/products-provider';
 import { Product } from '../../models/product-model';
 
 export interface ProductFetcher {
