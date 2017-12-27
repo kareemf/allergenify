@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, Platform, NavController } from 'ionic-angular';
-import { ProductsProvider } from '../../providers/products/products';
+import { ProductsProvider } from '../../providers/products/products-provider';
 import { Product } from '../../models/product-model';
 import { ListPage } from '../list-page';
 '../../providers/image-persistence/image-persistence';

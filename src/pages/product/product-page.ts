@@ -8,7 +8,7 @@ import { OcrProvider } from '../../providers/ocr/ocr';
 import { AllergensProvider } from '../../providers/allergens/allergens-provider';
 import { Allergen } from '../../models/allergen-model';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
-import { ProductProvider } from '../../providers/product/product';
+import { ProductProvider } from '../../providers/product/product-provider';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 export enum CameraReadyStatus {

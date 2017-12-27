@@ -11,7 +11,7 @@ import { OcrProviderMock } from '../../../test-config/ocr-provider-mock';
 
 import { ProductsPage } from './products-page';
 import { PipesModule } from '../../pipes/pipes.module';
-import { ProductsProvider } from '../../providers/products/products';
+import { ProductsProvider } from '../../providers/products/products-provider';
 import { Observable } from 'rxjs/Observable';
 import { Product } from '../../models/product-model';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
