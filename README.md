@@ -1,3 +1,19 @@
+## Allergenify
+#### What
+- Enables smartphone equipped users to scan product labels to detect the presence of (user supplied) allergens. 
+- More generally, multi-term search against text extracted from images, where search terms are persistent. 
+
+#### Why
+- To aide people with known allergies in making informed product choices. 
+- Does not require the user to retain all allergens and their aliases - just input it once.
+- To learn and to practice. Clean Code - Tell Don't Ask/Law of Demeter, testing and TDD, type script, mobile app development 
+
+#### Where
+- Should work on any mobile platform with Ionic / Cordova support. Currently only tested against iOS devices. 
+
+#### How
+Ionic 3+, Angular 3+, Typescript 2.6+, Cordova.
+
 ### Developement
 #### In-browser and/or Ioic Dev App
 If you intend to use a local browser only workflow, run 
