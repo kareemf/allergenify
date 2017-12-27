@@ -24,7 +24,7 @@ import { ProductProvider, ProductFetcher, ProductSaver } from '../../providers/p
 import { ProductsProvider } from '../../providers/products/products';
 import { ProductsProviderMock } from '../../../test-config/products-provider-mock';
 import { PipesModule } from '../../pipes/pipes.module';
-import { ProductPage } from './product';
+import { ProductPage } from './product-page';
 import { By } from '@angular/platform-browser';
 import { GenericAlerterMock } from '../../../test-config/generic-alerter-mock';
 import { OcrProviderMock } from '../../../test-config/ocr-provider-mock';

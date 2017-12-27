@@ -6,7 +6,7 @@ import { ListPage } from '../list-page';
 '../../providers/image-persistence/image-persistence';
 import { GenericAlerter } from '../../providers/generic-alerter/generic-alerter';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { CameraReadyStatus } from '../product/product';
+import { CameraReadyStatus } from '../product/product-page';
 import { OcrProvider } from '../../providers/ocr/ocr';
 import { Picture } from '../../models/picture-model';
 
