@@ -23,10 +23,10 @@ export class ProductsPage extends ListPage<Product> {
               private camera: Camera, private ocrProvider: OcrProvider) {
     super('Product', platform, productsProvider, alerter);
 
-     this.createPicture = this.createPicture.bind(this);
-     this.createProduct = this.createProduct.bind(this);
-     this.extractLabelFor = this.extractLabelFor.bind(this);
-     this.handleImageCaptureError = this.handleImageCaptureError.bind(this);
+    this.createPicture = this.createPicture.bind(this);
+    this.createProduct = this.createProduct.bind(this);
+    this.extractLabelFor = this.extractLabelFor.bind(this);
+    this.handleImageCaptureError = this.handleImageCaptureError.bind(this);
 
     // TODO: dedupte w/ ProductPage
     this.cameraOptions = {
@@ -83,10 +83,6 @@ export class ProductsPage extends ListPage<Product> {
 
   // TODO: dedupte w/ ProductPage
   private cameraReadyStatus(): CameraReadyStatus {
-    // if (!this.isDataLoaded) {
-      // return CameraReadyStatus.ViewDataNotLoaded;
-    // }
-
     if (!this.platform.is('cordova')) {
       return CameraReadyStatus.NotOnDevice;
     }
@@ -96,7 +92,6 @@ export class ProductsPage extends ListPage<Product> {
 
   private createPicture(imagePath): Picture {
     return new Picture(imagePath)
-    // return Product.from({ pictures: [] });
   }
 
   private createProduct(picture: Picture): Product {
