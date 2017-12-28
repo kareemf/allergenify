@@ -42,6 +42,12 @@
         View Text
       </button>
 
+      <p *ngIf="picture.containsAllergens()" color="danger">
+        {{picture.numAllergens()}} allergens found
+      </p>
+      <p *ngIf="!picture.containsAllergens()">
+        {{picture.status}}
+      </p>
 
       <span class="scanner" item-end>
         <ion-spinner  *ngIf="isScanning(picture)" name="dots"></ion-spinner>
