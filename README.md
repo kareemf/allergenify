@@ -11,11 +11,12 @@
 #### Where
 - Should work on any mobile platform with Ionic / Cordova support. 
 - Tested on:
--- iOS 11 (Xcode 9)
--- Android 7.1 (Android Studio 3)
+  - iOS 11 (Xcode 9)
+  - Android 7.1 (Android Studio 3)
 
 #### How
-Ionic 3+, Angular 3+, Typescript 2.6+, Cordova.
+- Ionic 3+, Angular 3+, Typescript 2.6+, Cordova.
+- Google Vision API for OCR and Label Detection
 
 ### Developement
 #### In-browser and/or Ioic Dev App
