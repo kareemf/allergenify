@@ -1,4 +1,5 @@
 ## Allergenify
+### Overview
 #### What
 - Enables smartphone equipped users to scan product labels to detect the presence of (user supplied) allergens. 
 - More generally, multi-term search against text extracted from images, where search terms are persistent. 
@@ -17,6 +18,13 @@
 #### How
 - Ionic 3+, Angular 3+, Typescript 2.6+, Cordova.
 - Google Vision API for OCR and Label Detection
+
+### Screens
+![Allergens Page](docs/1-Allergens.png)
+![Products Page](docs/2-Products.png)
+![Product Page](docs/3-Product.png)
+![Product Scan Results Page](docs/4-ProductScanResults.png)
+![Product Scanned Text Page](docs/5-ProductScannedText.png)
 
 ### Developement
 #### In-browser and/or Ioic Dev App
