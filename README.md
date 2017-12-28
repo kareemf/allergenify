@@ -9,7 +9,10 @@
 - To learn and to practice. Clean Code - Tell Don't Ask/Law of Demeter, testing and TDD, type script, mobile app development 
 
 #### Where
-- Should work on any mobile platform with Ionic / Cordova support. Currently only tested against iOS devices. 
+- Should work on any mobile platform with Ionic / Cordova support. 
+- Tested on:
+-- iOS 11 (Xcode 9)
+-- Android 7.1 (Android Studio 3)
 
 #### How
 Ionic 3+, Angular 3+, Typescript 2.6+, Cordova.
